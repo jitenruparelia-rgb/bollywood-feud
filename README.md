@@ -35,6 +35,18 @@ A tie at the end triggers a sudden-death Hard board at triple points.
 - **Hard** boards are for true filmi fans: composers, remakes, the Oscars, golden-era actresses, iconic dialogues.
 - **Newcomer hints** add a short explanation under each question. Hindi titles and dialogues show an English translation when revealed.
 
+## Typing in answers
+
+During the face-off, play and steal, a typing box sits at the bottom of the screen. Type what the player says and press **Enter**:
+
+- **On the board:** the tile flips. If it was a close match, such as a misspelling or a different wording, a pop-up shows the real answer and what was said.
+- **Not on the board:** a big red X appears with the guess underneath. During play that counts as a strike. During a steal it means the steal fails.
+- **Already revealed:** a pop-up says so, and the team doesn't get a strike.
+
+Matching accepts small typos ("amitab bachan"), nicknames ("SRK", "Big B"), other spellings ("laddu" for Ladoo) and similar phrasings ("are you married yet"). Unrelated answers that only share one word, like "chicken nuggets" for Chicken tikka masala, don't count. If the game ever gets one wrong, press **Undo**.
+
+Press **Esc** to leave the typing box and use the single-key shortcuts.
+
 ## Hosting tips
 
 - **One screen:** the host controls sit along the bottom. Click the board tiles or use the keyboard.
@@ -47,6 +59,8 @@ A tie at the end triggers a sudden-death Hard board at triple points.
 
 | Key | Action |
 |---|---|
+| Type + Enter | Check an answer against the board |
+| Esc | Leave the typing box to use the keys below |
 | Space | Reveal the question |
 | 1–8 | Reveal an answer |
 | X | Strike (in a face-off, a wrong-answer buzzer) |
@@ -69,12 +83,13 @@ Open `index.html` and find `const BOARDS` near the bottom. Each board looks like
 ```js
 {tier:'easy', q:"Name something you'd see at a Diwali party",
  hint:"A line of help for newcomers.",
- a:[["Diyas / candles",28,"optional note shown under the answer"],["Sweets (mithai)",24], ...]},
+ a:[["Diyas / candles",28,"optional note shown under the answer",["lamps","diya"]],["Sweets (mithai)",24], ...]},
 ```
 
 - `tier` is `easy`, `medium` or `hard`.
 - Answers go from most to least popular. Their points should add up to 100.
 - Up to 8 answers fit on a board.
+- The optional last list holds other answers to accept when typed, like nicknames or other spellings. Use `null` for the note if an answer has alternates but no note.
 
 Fast Money questions live in `const FASTMONEY`. Each answer can list other spellings the host might type, for example `["Shah Rukh Khan",36,["srk","shahrukh"]]`.
 

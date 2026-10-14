@@ -235,6 +235,7 @@ body[data-screen=setup] #diyas{position:fixed;bottom:8px;left:0;right:0;z-index:
 .c-buttons{display:flex;gap:8px;flex-wrap:wrap}
 .c-input{display:flex;gap:8px;flex:1 1 420px}
 .c-input input{flex:1;min-width:0;background:#0008;border:2px solid var(--gold2);border-radius:10px;padding:.55em .9em;font:600 16px var(--font-body);color:var(--cream);outline:none}
+.c-input[data-mode=game] [data-act=fmPass]{display:none}
 .c-input input:focus{border-color:var(--gold);box-shadow:0 0 14px #f6c45355}
 .c-extra{flex-basis:100%}
 .c-extra:empty{display:none}
@@ -312,8 +313,12 @@ select{font:500 13px var(--font-body);background:#1a0826;color:var(--cream);bord
 #banner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #banner .bn-title{font-family:var(--font-display);font-size:clamp(28px,4.6vw,76px);line-height:1.15;color:var(--gold);text-shadow:0 3px 0 #5a1a00;overflow-wrap:anywhere}
 #banner .bn-sub{font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:clamp(12px,1.4vw,22px);color:var(--cream)}
-#bigx{position:fixed;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;gap:2vmin;pointer-events:none;opacity:0;transition:opacity .2s}
+#bigx{position:fixed;inset:0;z-index:75;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;pointer-events:none;opacity:0;transition:opacity .2s}
 #bigx.show{opacity:1}
+#bigx .xrow{display:flex;gap:2vmin}
+.xcap{font-family:var(--font-display);font-size:clamp(26px,4vw,64px);line-height:1.15;color:#fff;text-align:center;max-width:90vw;overflow-wrap:anywhere;padding:.25em 1em .35em;border-radius:20px;background:linear-gradient(180deg,#5a0010f5,#2a0008f8);border:3px solid #ff8a8a;box-shadow:0 0 40px #ff2d2d88,0 20px 50px #000c;text-shadow:0 3px 0 #5a0000}
+.xcap small{display:block;font:800 clamp(12px,1.3vw,20px) var(--font-body);letter-spacing:.25em;text-transform:uppercase;color:#ffd0d0;text-shadow:none;margin-top:.3em}
+#bigx.show .xcap{animation:spIn .4s .1s both}
 #bigx svg{width:clamp(120px,24vmin,280px);height:auto;filter:drop-shadow(0 0 24px #ff2d2d) drop-shadow(0 10px 10px #000a)}
 #bigx.show svg{animation:xslam .35s cubic-bezier(.2,1.6,.4,1)}
 @keyframes xslam{from{transform:scale(2.6) rotate(-10deg);opacity:0}}
@@ -583,7 +588,7 @@ body.reduce .flame,body.reduce .diya .glow{animation-duration:4s}
 <script>
 /* =====================================================================
    QUESTION BANK
-   Each main board: tier (easy | medium | hard), q, hint, a: [[text, points, note?], ...]
+   Each main board: tier (easy | medium | hard), q, hint, a: [[text, points, note?, [other accepted answers]?], ...]
    Points on each board add up to 100, like a survey of 100 people.
    Harder rounds multiply every value (Easy ×1, Medium ×2, Hard ×3).
    Notes appear in small text under a revealed answer (great for translations).
@@ -592,113 +597,113 @@ const BOARDS = [
   /* ---------------- EASY (anyone can play) ---------------- */
   {tier:'easy', q:"Name something you'd see at a Diwali party",
    hint:"Diwali is the festival of lights, celebrated by over a billion people. Think lamps, sweets and sparkle!",
-   a:[["Diyas / candles",28,"Diyas are small clay oil lamps"],["Sweets (mithai)",24],["Fireworks / sparklers",18],["Rangoli",11,"Colourful patterns drawn on the floor"],["Fairy lights",8],["Card games",6],["New clothes",5]]},
+   a:[["Diyas / candles",28,"Diyas are small clay oil lamps",["diya", "lamps", "lamp", "oil lamps"]],["Sweets (mithai)",24,null,["sweet", "desserts", "candy", "mithai"]],["Fireworks / sparklers",18,null,["firecrackers", "crackers", "rockets", "firework"]],["Rangoli",11,"Colourful patterns drawn on the floor",["floor patterns", "colourful patterns", "floor art"]],["Fairy lights",8,null,["lights", "string lights", "decorations"]],["Card games",6,null,["cards", "teen patti", "poker", "gambling"]],["New clothes",5,null,["clothes", "outfits", "new outfit", "kurta", "saree"]]]},
   {tier:'easy', q:"Name a sweet you'd eat at Diwali",
    hint:"Indian sweets are called 'mithai'. If it's sugary and golden, say it!",
-   a:[["Gulab jamun",30,"Fried dough balls in rose syrup"],["Ladoo",24,"Round sweet balls"],["Kaju katli / barfi",18,"Cashew or milk fudge"],["Jalebi",14,"Crispy orange syrup swirls"],["Rasgulla",8,"Spongy balls in syrup"],["Halwa",6]]},
+   a:[["Gulab jamun",30,"Fried dough balls in rose syrup",["jamun", "gulab jamon"]],["Ladoo",24,"Round sweet balls",["laddu", "laddoo", "ladu", "laddoos", "ladoos"]],["Kaju katli / barfi",18,"Cashew or milk fudge",["burfi", "kaju", "cashew"]],["Jalebi",14,"Crispy orange syrup swirls",["jalebis", "jilebi"]],["Rasgulla",8,"Spongy balls in syrup",["rasgulle", "rosogolla", "rasmalai"]],["Halwa",6,null,["halva", "gajar halwa"]]]},
   {tier:'easy', q:"Name something people do on Diwali night",
    hint:"Think New Year's Eve, Christmas and Bonfire Night rolled into one.",
-   a:[["Light diyas / candles",30],["Set off fireworks",26],["Eat sweets",16],["Pray (Lakshmi puja)",12,"Worship of the goddess of wealth"],["Play cards",9],["Visit family & friends",7]]},
+   a:[["Light diyas / candles",30,null,["lamps", "diyas", "candles", "lights", "light"]],["Set off fireworks",26,null,["fireworks", "crackers", "firecrackers", "sparklers"]],["Eat sweets",16,null,["sweets", "mithai", "eat"]],["Pray (Lakshmi puja)",12,"Worship of the goddess of wealth",["puja", "pooja", "worship", "prayer", "temple", "lakshmi"]],["Play cards",9,null,["cards", "gamble", "gambling", "teen patti"]],["Visit family & friends",7,null,["family", "friends", "visiting", "relatives"]]]},
   {tier:'easy', q:"Name an Indian song that gets everyone dancing at a party",
    hint:"Never heard one? Guess anything you've seen on TikTok or at a wedding!",
-   a:[["Kala Chashma",22,"From Baar Baar Dekho (2016)"],["London Thumakda",17,"From Queen (2014)"],["Naatu Naatu",16,"Oscar-winning song from RRR"],["Jai Ho",14,"From Slumdog Millionaire"],["Gallan Goodiyaan",12],["Chaiyya Chaiyya",11,"The one danced on top of a train"],["Desi Girl",8]]},
+   a:[["Kala Chashma",22,"From Baar Baar Dekho (2016)",["kaala chashma"]],["London Thumakda",17,"From Queen (2014)"],["Naatu Naatu",16,"Oscar-winning song from RRR",["natu natu", "naacho naacho"]],["Jai Ho",14,"From Slumdog Millionaire"],["Gallan Goodiyaan",12,null,["gallan goodiyan"]],["Chaiyya Chaiyya",11,"The one danced on top of a train",["chaiya chaiya", "chaiyya"]],["Desi Girl",8]]},
   {tier:'easy', q:"Name something that ALWAYS happens in a Bollywood movie",
    hint:"Bollywood = Hindi-language films made in Mumbai (Bombay + Hollywood).",
-   a:[["Song & dance number",38],["Slow-motion drama",17],["A big wedding",14],["Hero fights 20 goons",12],["Mum cries",10],["Dancing in the rain",9]]},
+   a:[["Song & dance number",38,null,["dancing", "dance", "singing", "songs", "song", "music", "musical", "item number"]],["Slow-motion drama",17,null,["slow mo", "slow motion", "drama", "dramatic"]],["A big wedding",14,null,["wedding", "marriage", "shaadi"]],["Hero fights 20 goons",12,null,["fight", "fight scene", "fighting", "action", "goons"]],["Mum cries",10,null,["mom cries", "mom crying", "mother crying", "crying", "tears", "mom", "mother"]],["Dancing in the rain",9,null,["rain", "rain song", "rain dance", "wet saree"]]]},
   {tier:'easy', q:"Name something you'd see at a big Indian wedding",
    hint:"Indian weddings can last several days with hundreds (or thousands!) of guests.",
-   a:[["Mehndi / henna",25,"Intricate designs painted on hands"],["Dancing",22],["Groom on a horse",16,"Part of the baraat procession"],["Mountains of food",14],["Walking around the fire",10,"The pheras – seven vows"],["Gold jewellery",8],["Fireworks",5]]},
+   a:[["Mehndi / henna",25,"Intricate designs painted on hands",["mehendi", "mehandi"]],["Dancing",22,null,["dance", "sangeet", "bhangra"]],["Groom on a horse",16,"Part of the baraat procession",["horse", "baraat", "groom"]],["Mountains of food",14,null,["food", "buffet", "eating"]],["Walking around the fire",10,"The pheras – seven vows",["fire", "pheras", "vows", "seven steps", "circling the fire"]],["Gold jewellery",8,null,["jewelry", "gold", "jewellery"]],["Fireworks",5]]},
   {tier:'easy', q:"Name a Bollywood actor whose name almost everyone knows",
    hint:"Even if you've never watched a Bollywood film, someone's name will ring a bell.",
-   a:[["Shah Rukh Khan",40,"'King Khan' – SRK"],["Amitabh Bachchan",18,"'Big B'"],["Salman Khan",15],["Aamir Khan",10],["Hrithik Roshan",9],["Ranveer Singh",8]]},
+   a:[["Shah Rukh Khan",40,"'King Khan' – SRK",["srk", "shahrukh", "sharukh", "king khan", "shahrukh khan"]],["Amitabh Bachchan",18,"'Big B'",["amitabh", "big b", "bachchan"]],["Salman Khan",15,null,["salman"]],["Aamir Khan",10,null,["aamir", "amir", "amir khan"]],["Hrithik Roshan",9,null,["hrithik", "hritik", "ritik"]],["Ranveer Singh",8,null,["ranveer"]]]},
   {tier:'easy', q:"Name a Bollywood actress who's also known in Hollywood",
    hint:"Think Quantico, xXx, Cannes red carpets and the Met Gala.",
-   a:[["Priyanka Chopra",44,"Quantico, Citadel"],["Deepika Padukone",26,"xXx: Return of Xander Cage"],["Aishwarya Rai",18,"Former Miss World"],["Alia Bhatt",7,"Heart of Stone"],["Katrina Kaif",5]]},
+   a:[["Priyanka Chopra",44,"Quantico, Citadel",["priyanka", "pc"]],["Deepika Padukone",26,"xXx: Return of Xander Cage",["deepika"]],["Aishwarya Rai",18,"Former Miss World",["aishwarya", "ash", "aishwarya rai bachchan"]],["Alia Bhatt",7,"Heart of Stone",["alia"]],["Katrina Kaif",5,null,["katrina"]]]},
   {tier:'easy', q:"Name a classic Bollywood dance move",
    hint:"Stand up and try it! Bonus points for full commitment.",
-   a:[["Screw in the light bulb",30,"One hand up, twist!"],["Shoulder shimmy",20],["Bhangra arms",18,"Both arms up, shoulders bouncing"],["SRK's open arms",14,"Shah Rukh's signature pose"],["Twirl / spin",10],["Snake (nagin) dance",8]]},
+   a:[["Screw in the light bulb",30,"One hand up, twist!",["light bulb", "lightbulb", "bulb", "twist the bulb"]],["Shoulder shimmy",20,null,["shimmy", "shoulders", "shoulder"]],["Bhangra arms",18,"Both arms up, shoulders bouncing",["bhangra", "raise the roof"]],["SRK's open arms",14,"Shah Rukh's signature pose",["open arms", "arms wide", "srk pose", "arms out"]],["Twirl / spin",10,null,["spin", "twirl", "twirling", "spinning"]],["Snake (nagin) dance",8,null,["nagin", "snake", "naagin"]]]},
   {tier:'easy', q:"Name something you'd see on a Bollywood movie poster",
    hint:"Picture the most dramatic poster you can imagine.",
-   a:[["The hero's face",30],["The couple embracing",20],["Explosions / action",15],["The hero's six-pack",13],["Someone holding a gun",12],["Snowy mountains",10]]},
+   a:[["The hero's face",30,null,["hero", "face", "actor", "close up"]],["The couple embracing",20,null,["couple", "romance", "love", "hug", "kiss", "hero and heroine"]],["Explosions / action",15,null,["explosion", "blast", "fire", "action"]],["The hero's six-pack",13,null,["abs", "six pack", "shirtless", "muscles"]],["Someone holding a gun",12,null,["gun", "guns", "pistol", "weapon"]],["Snowy mountains",10,null,["mountains", "snow", "switzerland", "alps"]]]},
   {tier:'easy', q:"Name a place where Bollywood songs are famously filmed",
    hint:"Bollywood loves an exotic backdrop for a love song.",
-   a:[["Switzerland",34,"The snowy Alps"],["Mustard fields of Punjab",20],["Mumbai",14],["London",12],["Kashmir",10],["Goa beaches",10]]},
+   a:[["Switzerland",34,"The snowy Alps",["swiss", "alps", "swiss alps"]],["Mustard fields of Punjab",20,null,["punjab", "mustard fields", "fields", "mustard", "farm"]],["Mumbai",14,null,["bombay"]],["London",12,null,["uk", "england", "britain"]],["Kashmir",10],["Goa beaches",10,null,["goa", "beach", "beaches"]]]},
   {tier:'easy', q:"Name a question an Indian aunty asks you at a party",
    hint:"Every family has that one relative. Every. Single. One.",
-   a:[["When are you getting married?",38],["Have you put on weight?",18],["How much do you earn?",14],["When are you having kids?",12],["Have you eaten?",10],["Why don't you ever call?",8]]},
+   a:[["When are you getting married?",38,null,["marriage", "married", "wedding", "shaadi", "when is your wedding"]],["Have you put on weight?",18,null,["fat", "weight", "gained weight", "you got fat"]],["How much do you earn?",14,null,["salary", "money", "income", "job", "earn", "what do you do"]],["When are you having kids?",12,null,["kids", "babies", "baby", "children", "grandchildren"]],["Have you eaten?",10,null,["eat", "food", "hungry", "have you eaten", "did you eat"]],["Why don't you ever call?",8,null,["call", "phone", "visit", "never call"]]]},
   {tier:'easy', q:"Name an Indian dish a first-timer would order",
    hint:"Think of the menu at your local Indian restaurant.",
-   a:[["Butter chicken",32],["Samosa",22],["Naan",18],["Chicken tikka masala",12],["Biryani",10,"Spiced rice dish"],["Mango lassi",6,"Yoghurt drink"]]},
+   a:[["Butter chicken",32,null,["murgh makhani", "makhani"]],["Samosa",22,null,["samosas"]],["Naan",18,null,["nan", "garlic naan", "bread"]],["Chicken tikka masala",12,null,["tikka", "tikka masala", "ctm"]],["Biryani",10,"Spiced rice dish",["biriyani", "rice"]],["Mango lassi",6,"Yoghurt drink",["lassi"]]]},
   {tier:'easy', q:"Name an Indian film the whole world has heard of",
    hint:"Oscars, Netflix and that friend who won't stop recommending it.",
-   a:[["RRR",28,"2022 Telugu blockbuster"],["3 Idiots",22],["Slumdog Millionaire",18,"British film, Indian story & cast"],["Lagaan",12,"Oscar-nominated cricket epic"],["DDLJ",10,"Dilwale Dulhania Le Jayenge (1995)"],["Dangal",6],["Sholay",4]]},
+   a:[["RRR",28,"2022 Telugu blockbuster"],["3 Idiots",22,null,["three idiots"]],["Slumdog Millionaire",18,"British film, Indian story & cast",["slumdog"]],["Lagaan",12,"Oscar-nominated cricket epic"],["DDLJ",10,"Dilwale Dulhania Le Jayenge (1995)",["dilwale dulhania le jayenge", "dilwale", "ddlj"]],["Dangal",6],["Sholay",4]]},
 
   /* ---------------- MEDIUM (a little Bollywood knowledge) ---------------- */
   {tier:'medium', q:"Name one of the 'Three Khans' of Bollywood",
    hint:"Three superstars, all born in 1965, who share the surname Khan.",
-   a:[["Shah Rukh Khan",48],["Salman Khan",30],["Aamir Khan",22]]},
+   a:[["Shah Rukh Khan",48,null,["srk", "shahrukh", "sharukh", "king khan", "shahrukh khan"]],["Salman Khan",30,null,["salman"]],["Aamir Khan",22,null,["aamir", "amir", "amir khan"]]]},
   {tier:'medium', q:"Name something every classic Bollywood villain has",
    hint:"Think Bond villain… with more eyeliner and an evil laugh.",
-   a:[["An evil laugh",28],["A secret hideout",18],["Kidnaps the heroine (or mum)",16],["Henchmen in black",12],["Gold chains",10],["A famous catchphrase",8,"'Mogambo khush hua!'"],["Dark sunglasses",8]]},
+   a:[["An evil laugh",28,null,["laugh", "laughing", "cackle", "evil laugh"]],["A secret hideout",18,null,["hideout", "lair", "den", "base", "secret base"]],["Kidnaps the heroine (or mum)",16,null,["kidnap", "kidnapping", "kidnaps", "hostage"]],["Henchmen in black",12,null,["henchmen", "goons", "gang", "sidekicks"]],["Gold chains",10,null,["chains", "gold", "jewellery", "bling"]],["A famous catchphrase",8,"'Mogambo khush hua!'",["catchphrase", "dialogue", "mogambo", "famous line"]],["Dark sunglasses",8,null,["sunglasses", "glasses", "shades"]]]},
   {tier:'medium', q:"Name a Shah Rukh Khan film",
    hint:"He's made over 80 films. Any one counts!",
-   a:[["DDLJ",30,"Dilwale Dulhania Le Jayenge – 'The Big-Hearted Will Take the Bride'"],["Kuch Kuch Hota Hai",20,"'Something Happens'"],["Kabhi Khushi Kabhie Gham",16,"'Sometimes Happiness, Sometimes Sorrow'"],["Jawan",12],["Pathaan",10],["My Name Is Khan",7],["Om Shanti Om",5]]},
+   a:[["DDLJ",30,"Dilwale Dulhania Le Jayenge – 'The Big-Hearted Will Take the Bride'",["dilwale dulhania le jayenge", "dilwale", "ddlj"]],["Kuch Kuch Hota Hai",20,"'Something Happens'",["kkhh"]],["Kabhi Khushi Kabhie Gham",16,"'Sometimes Happiness, Sometimes Sorrow'",["k3g", "kabhi khushi"]],["Jawan",12],["Pathaan",10,null,["pathan"]],["My Name Is Khan",7],["Om Shanti Om",5,null,["om shanti"]]]},
   {tier:'medium', q:"Name something a strict Bollywood father does",
    hint:"The hero's biggest obstacle is rarely the villain — it's the girl's dad.",
-   a:[["Rejects the love match",32],["Shouts 'Get out of my house!'",22],["Insists you become a doctor",18],["Arranges your marriage",14],["Offers the hero money to leave",8],["Glares in total silence",6]]},
+   a:[["Rejects the love match",32,null,["reject", "says no", "disapproves", "refuses"]],["Shouts 'Get out of my house!'",22,null,["get out", "kicks out", "throws out", "shouts"]],["Insists you become a doctor",18,null,["doctor", "engineer", "career", "studies"]],["Arranges your marriage",14,null,["arranged marriage", "arranged"]],["Offers the hero money to leave",8,null,["money", "bribe", "cheque", "pays"]],["Glares in total silence",6,null,["glare", "stare", "staring", "silent", "silence"]]]},
   {tier:'medium', q:"Name a famous real-life Bollywood couple",
    hint:"Many met on set. One actress married a Jonas Brother!",
-   a:[["Ranveer & Deepika",28],["Aishwarya & Abhishek",20],["Priyanka & Nick Jonas",18],["Alia & Ranbir",14],["Katrina & Vicky",10],["Kareena & Saif",10]]},
+   a:[["Ranveer & Deepika",28,null,["deepveer", "ranveer", "deepika"]],["Aishwarya & Abhishek",20,null,["aishwarya", "abhishek"]],["Priyanka & Nick Jonas",18,null,["nick jonas", "priyanka", "nick", "nickyanka"]],["Alia & Ranbir",14,null,["alia", "ranbir"]],["Katrina & Vicky",10,null,["katrina", "vicky kaushal", "vicky"]],["Kareena & Saif",10,null,["kareena", "saif", "saifeena"]]]},
   {tier:'medium', q:"Name a Bollywood film about sport",
    hint:"Cricket is huge, but don't forget wrestling, hockey and running.",
-   a:[["Lagaan",28,"Cricket vs the British Raj"],["Dangal",26,"Wrestling sisters"],["Chak De! India",18,"Women's hockey"],["Bhaag Milkha Bhaag",12,"Sprinting legend Milkha Singh"],["83",8,"India's 1983 Cricket World Cup win"],["M.S. Dhoni: The Untold Story",8]]},
+   a:[["Lagaan",28,"Cricket vs the British Raj"],["Dangal",26,"Wrestling sisters"],["Chak De! India",18,"Women's hockey",["chak de"]],["Bhaag Milkha Bhaag",12,"Sprinting legend Milkha Singh",["milkha", "bhag milkha bhag"]],["83",8,"India's 1983 Cricket World Cup win",["eighty three", "1983"]],["M.S. Dhoni: The Untold Story",8,null,["dhoni", "ms dhoni"]]]},
   {tier:'medium', q:"Name something a Bollywood hero does to win over the heroine",
    hint:"Subtlety is not the hero's strong point.",
-   a:[["Sings to her",30],["Beats up the goons",22],["Wins over her family",14],["Chases after her train",12],["Shows off on a motorbike",10],["Proposes in front of everyone",6],["Stands in the rain",6]]},
+   a:[["Sings to her",30,null,["sing", "singing", "song", "serenade"]],["Beats up the goons",22,null,["fight", "fights", "beats up", "goons", "saves her", "rescues her"]],["Wins over her family",14,null,["family", "parents", "her dad", "her father"]],["Chases after her train",12,null,["train", "chases her", "chase"]],["Shows off on a motorbike",10,null,["bike", "motorbike", "motorcycle"]],["Proposes in front of everyone",6,null,["propose", "proposal", "proposes"]],["Stands in the rain",6,null,["rain"]]]},
   {tier:'medium', q:"Name an Amitabh Bachchan film",
    hint:"'Big B' has been a megastar since the 1970s.",
-   a:[["Sholay",30,"'Embers' (1975) – India's iconic Western"],["Deewaar",18,"'The Wall' (1975)"],["Kabhi Khushi Kabhie Gham",14],["Don",12],["Paa",10],["Black",8],["Piku",8]]},
+   a:[["Sholay",30,"'Embers' (1975) – India's iconic Western"],["Deewaar",18,"'The Wall' (1975)",["deewar", "diwar"]],["Kabhi Khushi Kabhie Gham",14,null,["k3g", "kabhi khushi"]],["Don",12],["Paa",10,null,["pa"]],["Black",8],["Piku",8]]},
   {tier:'medium', q:"Name a Bollywood film with a famous train scene",
    hint:"Bollywood LOVES a train. Hands reaching out of doors, dancing on roofs…",
-   a:[["DDLJ",40,"Simran running for Raj's hand"],["Chennai Express",22],["Dil Se",18,"'Chaiyya Chaiyya' on the train roof"],["Jab We Met",14,"'When We Met'"],["Sholay",6]]},
+   a:[["DDLJ",40,"Simran running for Raj's hand",["dilwale dulhania le jayenge", "dilwale", "ddlj"]],["Chennai Express",22,null,["chennai"]],["Dil Se",18,"'Chaiyya Chaiyya' on the train roof",["dil se"]],["Jab We Met",14,"'When We Met'"],["Sholay",6]]},
   {tier:'medium', q:"Name a singer whose voice you hear in Bollywood songs",
    hint:"Actors usually lip-sync. The real voices belong to 'playback singers'.",
-   a:[["Arijit Singh",30],["Lata Mangeshkar",24,"'Nightingale of India'"],["Kishore Kumar",14],["Shreya Ghoshal",12],["Sonu Nigam",10],["A.R. Rahman",10,"Composer and singer of 'Jai Ho'"]]},
+   a:[["Arijit Singh",30,null,["arijit"]],["Lata Mangeshkar",24,"'Nightingale of India'",["lata", "lata ji"]],["Kishore Kumar",14,null,["kishore"]],["Shreya Ghoshal",12,null,["shreya"]],["Sonu Nigam",10,null,["sonu"]],["A.R. Rahman",10,"Composer and singer of 'Jai Ho'",["ar rahman", "rahman", "a r rahman"]]]},
   {tier:'medium', q:"Name a Bollywood film set in a school or college",
    hint:"Campus romance, rivalries and a very strict principal.",
-   a:[["3 Idiots",34],["Kuch Kuch Hota Hai",24],["Student of the Year",18],["Main Hoon Na",12,"'I Am Here'"],["Chhichhore",6],["Jo Jeeta Wohi Sikandar",6]]},
+   a:[["3 Idiots",34,null,["three idiots"]],["Kuch Kuch Hota Hai",24,null,["kkhh"]],["Student of the Year",18,null,["soty"]],["Main Hoon Na",12,"'I Am Here'"],["Chhichhore",6,null,["chichore", "chhichore"]],["Jo Jeeta Wohi Sikandar",6,null,["jo jeeta"]]]},
   {tier:'medium', q:"Name a Bollywood film with 'Dil' (heart) in the title",
    hint:"'Dil' means heart — and Bollywood has a LOT of heart.",
-   a:[["Dil Chahta Hai",26,"'The Heart Desires'"],["Dilwale Dulhania Le Jayenge",24],["Dil Se",16,"'From the Heart'"],["Dil To Pagal Hai",14,"'The Heart Is Crazy'"],["Ae Dil Hai Mushkil",12,"'O Heart, It's Difficult'"],["Dil Dhadakne Do",8,"'Let the Heart Beat'"]]},
+   a:[["Dil Chahta Hai",26,"'The Heart Desires'",["dch"]],["Dilwale Dulhania Le Jayenge",24],["Dil Se",16,"'From the Heart'",["dil se"]],["Dil To Pagal Hai",14,"'The Heart Is Crazy'"],["Ae Dil Hai Mushkil",12,"'O Heart, It's Difficult'"],["Dil Dhadakne Do",8,"'Let the Heart Beat'"]]},
   {tier:'medium', q:"Name a Bollywood star whose parent was also in films",
    hint:"Bollywood runs in the family — some go back four generations.",
-   a:[["Ranbir Kapoor",22],["Alia Bhatt",20,"Daughter of director Mahesh Bhatt"],["Abhishek Bachchan",18],["Hrithik Roshan",14],["Sonam Kapoor",10],["Janhvi Kapoor",8],["Varun Dhawan",8]]},
+   a:[["Ranbir Kapoor",22],["Alia Bhatt",20,"Daughter of director Mahesh Bhatt",["alia"]],["Abhishek Bachchan",18],["Hrithik Roshan",14,null,["hrithik", "hritik", "ritik"]],["Sonam Kapoor",10],["Janhvi Kapoor",8],["Varun Dhawan",8]]},
   {tier:'medium', q:"Name a film starring Deepika Padukone or Priyanka Chopra",
    hint:"Think epic period dramas, action and romance.",
-   a:[["Bajirao Mastani",24,"Stars both of them!"],["Padmaavat",20],["Om Shanti Om",16],["Chennai Express",14],["Pathaan",10],["Barfi!",10],["Fashion",6]]},
+   a:[["Bajirao Mastani",24,"Stars both of them!",["bajirao"]],["Padmaavat",20,null,["padmavat", "padmavati"]],["Om Shanti Om",16,null,["om shanti"]],["Chennai Express",14,null,["chennai"]],["Pathaan",10,null,["pathan"]],["Barfi!",10,null,["barfi", "burfi"]],["Fashion",6]]},
 
   /* ---------------- HARD (for the true filmi fans) ---------------- */
   {tier:'hard', q:"Name a composer behind Bollywood hit songs",
    hint:"Not the singers — the people who write the music.",
-   a:[["A.R. Rahman",36,"'The Mozart of Madras'"],["Pritam",16],["Vishal–Shekhar",14],["Shankar–Ehsaan–Loy",14],["R.D. Burman",12],["Amit Trivedi",8]]},
+   a:[["A.R. Rahman",36,"'The Mozart of Madras'",["ar rahman", "rahman", "a r rahman"]],["Pritam",16],["Vishal–Shekhar",14,null,["vishal shekhar", "vishal"]],["Shankar–Ehsaan–Loy",14,null,["shankar ehsaan loy", "shankar"]],["R.D. Burman",12,null,["rd burman", "pancham", "burman"]],["Amit Trivedi",8]]},
   {tier:'hard', q:"Name a Bollywood film inspired by a Hollywood movie",
    hint:"Bonus respect if you can name the original!",
-   a:[["Ghajini",24,"Memento"],["Laal Singh Chaddha",24,"Forrest Gump"],["Bang Bang!",14,"Knight and Day"],["Partner",12,"Hitch"],["Kaante",10,"Reservoir Dogs"],["Baazigar",9,"A Kiss Before Dying"],["Players",7,"The Italian Job"]]},
+   a:[["Ghajini",24,"Memento",["memento"]],["Laal Singh Chaddha",24,"Forrest Gump",["forrest gump", "lal singh chadha", "laal singh"]],["Bang Bang!",14,"Knight and Day",["knight and day", "bang bang"]],["Partner",12,"Hitch",["hitch"]],["Kaante",10,"Reservoir Dogs",["reservoir dogs"]],["Baazigar",9,"A Kiss Before Dying",["a kiss before dying", "bazigar"]],["Players",7,"The Italian Job",["the italian job", "italian job"]]]},
   {tier:'hard', q:"Name an Indian film that made it to the Oscars",
    hint:"Nominations and wins both count.",
    a:[["RRR",30,"'Naatu Naatu' won Best Original Song"],["Lagaan",28,"Nominated, Best Foreign Language Film"],["Mother India",14,"India's first nominee (1958)"],["Salaam Bombay!",12],["The Elephant Whisperers",10,"Won Best Documentary Short"],["Writing with Fire",6,"Nominated, Best Documentary"]]},
   {tier:'hard', q:"Name a Bollywood film from the 1990s",
    hint:"The era of big hair, big romance and Swiss mountain songs.",
-   a:[["DDLJ",26,"1995"],["Kuch Kuch Hota Hai",18,"1998"],["Hum Aapke Hain Koun..!",18,"1994"],["Dil To Pagal Hai",12,"1997"],["Rangeela",10,"1995"],["Taal",8,"1999"],["Hum Dil De Chuke Sanam",8,"1999"]]},
+   a:[["DDLJ",26,"1995",["dilwale dulhania le jayenge", "dilwale", "ddlj"]],["Kuch Kuch Hota Hai",18,"1998",["kkhh"]],["Hum Aapke Hain Koun..!",18,"1994",["hahk", "hum aapke hain kaun"]],["Dil To Pagal Hai",12,"1997"],["Rangeela",10,"1995"],["Taal",8,"1999"],["Hum Dil De Chuke Sanam",8,"1999",["hddcs"]]]},
   {tier:'hard', q:"Name a famous Bollywood director",
    hint:"Behind the camera, not in front of it.",
-   a:[["Karan Johar",30],["Sanjay Leela Bhansali",22,"Devdas, Padmaavat"],["Yash Chopra",16,"'The King of Romance'"],["Rajkumar Hirani",14,"3 Idiots, PK"],["Rohit Shetty",10,"Cars flying everywhere"],["Zoya Akhtar",8,"Gully Boy"]]},
+   a:[["Karan Johar",30,null,["karan", "kjo"]],["Sanjay Leela Bhansali",22,"Devdas, Padmaavat",["bhansali", "slb"]],["Yash Chopra",16,"'The King of Romance'"],["Rajkumar Hirani",14,"3 Idiots, PK",["hirani", "raju hirani"]],["Rohit Shetty",10,"Cars flying everywhere"],["Zoya Akhtar",8,"Gully Boy"]]},
   {tier:'hard', q:"Name a South Indian film star famous all over India",
    hint:"India has huge film industries beyond Bollywood, in Tamil, Telugu, Malayalam & Kannada.",
-   a:[["Rajinikanth",34,"'Thalaivar' – the Boss"],["Prabhas",22,"Baahubali"],["Allu Arjun",18,"Pushpa"],["Jr NTR",12,"RRR"],["Ram Charan",8,"RRR"],["Kamal Haasan",6]]},
+   a:[["Rajinikanth",34,"'Thalaivar' – the Boss",["rajni", "rajnikanth", "thalaivar"]],["Prabhas",22,"Baahubali"],["Allu Arjun",18,"Pushpa"],["Jr NTR",12,"RRR",["ntr", "junior ntr"]],["Ram Charan",8,"RRR"],["Kamal Haasan",6]]},
   {tier:'hard', q:"Name an iconic Bollywood dialogue (or the film it's from)",
    hint:"Translations appear as each answer is revealed.",
-   a:[["Kitne aadmi the? – Sholay",22,"'How many men were there?'"],["Mogambo khush hua – Mr. India",22,"'Mogambo is pleased'"],["Mere paas maa hai – Deewaar",18,"'I have Mother'"],["Bade bade deshon mein… – DDLJ",14,"'Such small things happen in big countries'"],["How's the josh? – Uri",12,"'How's the spirit?'"],["Don ko pakadna… – Don",12,"'Catching Don isn't just hard, it's impossible'"]]},
+   a:[["Kitne aadmi the? – Sholay",22,"'How many men were there?'",["kitne aadmi the", "how many men were there"]],["Mogambo khush hua – Mr. India",22,"'Mogambo is pleased'",["mogambo", "mogambo khush hua", "mr india"]],["Mere paas maa hai – Deewaar",18,"'I have Mother'",["mere paas maa hai", "mere pass maa hai", "i have mother"]],["Bade bade deshon mein… – DDLJ",14,"'Such small things happen in big countries'",["bade bade deshon mein", "senorita"]],["How's the josh? – Uri",12,"'How's the spirit?'",["hows the josh", "josh", "uri"]],["Don ko pakadna… – Don",12,"'Catching Don isn't just hard, it's impossible'",["don ko pakadna"]]]},
   {tier:'hard', q:"Name a Bollywood actress from the black-and-white golden era",
    hint:"The 1940s–60s: the classics your grandparents swooned over.",
    a:[["Madhubala",30,"Mughal-e-Azam"],["Nargis",22,"Mother India"],["Meena Kumari",16,"'The Tragedy Queen'"],["Waheeda Rehman",14],["Vyjayanthimala",10],["Nutan",8]]}
@@ -727,7 +732,7 @@ const FASTMONEY = [
   {q:"Name a food you'd buy from an Indian street stall", a:[["Pani puri",30,["golgappa","gol gappa","puchka","panipuri","golgappe"]],["Samosa",22,["samosas"]],["Chaat",16,["papdi chaat","bhel","bhel puri"]],["Vada pav",14,["vada pao","wada pav"]],["Pakora",10,["bhaji","onion bhaji","pakoda","pakoras"]],["Jalebi",8]]}
 ];
 
-BOARDS.forEach(b => { b.answers = b.a.map(([text, pts, note]) => ({text, pts, note})); });
+BOARDS.forEach(b => { b.answers = b.a.map(([text, pts, note, alts]) => ({text, pts, note: note || '', alts: alts || []})); });
 FASTMONEY.forEach(f => { f.answers = f.a.map(([text, pts, alts]) => ({text, pts, alts: alts || []})); });
 </script>
 <script>
@@ -856,28 +861,41 @@ function award(team, how){
   fx('award', { team, pts, how });
 }
 
+function revealTile(i, typed){
+  if (S.screen !== 'game' || S.phase === 'hidden') return;
+  i = +i; const b = curBoard();
+  if (!(i >= 0 && i < b.answers.length) || S.revealed[i]) return;
+  const pts = b.answers[i].pts * mult();
+  if (S.phase === 'over') { commit(() => { S.revealed[i] = 2; fx('revealFree', { i }); }); return; }
+  commit(() => {
+    S.revealed[i] = 1; S.bank += pts; fx('reveal', { i, pts, t: typed || '' });
+    if (S.phase === 'play' && allRevealed()) award(S.control, 'clear');
+    else if (S.phase === 'steal') award(1 - S.control, 'steal');
+  });
+}
+function doStrike(typed){
+  if (S.screen !== 'game') return;
+  if (S.phase === 'faceoff') { commit(() => fx('miss', { t: typed || '' }), { hist: false }); return; }
+  if (S.phase !== 'play') return;
+  commit(() => {
+    S.strikes++; fx('strike', { count: S.strikes, t: typed || '' });
+    if (S.strikes >= 3) { S.phase = 'steal'; fx('stealPrompt', { team: 1 - S.control }); }
+  });
+}
+
 const ACTS = {
   revealQ(){ if (S.screen !== 'game' || S.phase !== 'hidden') return; commit(() => { S.phase = 'faceoff'; fx('question'); }); },
-  tile(i){
-    if (S.screen !== 'game' || S.phase === 'hidden') return;
-    i = +i; const b = curBoard();
-    if (!(i >= 0 && i < b.answers.length) || S.revealed[i]) return;
-    const pts = b.answers[i].pts * mult();
-    if (S.phase === 'over') { commit(() => { S.revealed[i] = 2; fx('revealFree', { i }); }); return; }
-    commit(() => {
-      S.revealed[i] = 1; S.bank += pts; fx('reveal', { i, pts });
-      if (S.phase === 'play' && allRevealed()) award(S.control, 'clear');
-      else if (S.phase === 'steal') award(1 - S.control, 'steal');
-    });
-  },
-  strike(){
-    if (S.screen !== 'game') return;
-    if (S.phase === 'faceoff') { commit(() => fx('miss'), { hist: false }); return; }
-    if (S.phase !== 'play') return;
-    commit(() => {
-      S.strikes++; fx('strike', { count: S.strikes });
-      if (S.strikes >= 3) { S.phase = 'steal'; fx('stealPrompt', { team: 1 - S.control }); }
-    });
+  tile(i){ revealTile(i); },
+  strike(){ doStrike(); },
+  guess(text){
+    if (S.screen !== 'game' || !['faceoff','play','steal'].includes(S.phase)) return;
+    const t = String(text || '').trim(); if (!t) return 'empty';
+    const ranked = rankAnswers(curBoard(), t);
+    const hit = ranked.find(r => !S.revealed[r.i]);
+    if (hit) { revealTile(hit.i, t); return 'hit'; }
+    if (ranked.length) { commit(() => fx('already', { t, i: ranked[0].i }), { hist: false }); return 'already'; }
+    if (S.phase === 'steal') { commit(() => { fx('miss', { t }); award(S.control, 'stealfail'); }); return 'miss'; }
+    doStrike(t); return 'miss';
   },
   control(t){
     if (S.screen !== 'game' || S.phase !== 'faceoff') return;
@@ -1008,7 +1026,10 @@ function fmSetMatch(p, i, v){
     if (fm.phase === 'done') { /* totals recompute on render */ }
   });
 }
-function submitFM(inp){ const r = ACTS.fmSubmit(inp.value); if (r === 'dup') inp.select(); else inp.value = ''; }
+function submitFM(inp){
+  const r = S.screen === 'game' ? ACTS.guess(inp.value) : ACTS.fmSubmit(inp.value);
+  if (r === 'dup' || r === 'already') inp.select(); else inp.value = '';
+}
 
 /* answer matching for Fast Money */
 function norm(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').replace(/\b(the|a|an)\b/g, ' ').replace(/\s+/g, ' ').trim(); }
@@ -1021,26 +1042,43 @@ function lev(a, b){
 function cands(a){
   if (a._c) return a._c;
   const set = new Set([norm(a.text)]);
-  a.text.split(/[\/()]/).forEach(p => { const n = norm(p); if (n) set.add(n); });
+  a.text.split(/[\/()–]/).forEach(p => { const n = norm(p); if (n) set.add(n); });
   (a.alts || []).forEach(x => { const n = norm(x); if (n) set.add(n); });
   return (a._c = [...set]);
 }
-function matchAnswer(board, typed){
-  const t = norm(typed); if (!t) return null;
-  const tc = t.replace(/ /g, '');
-  let best = null, bs = 0;
-  board.answers.forEach((a, i) => {
-    for (const c of cands(a)) {
-      const cc = c.replace(/ /g, ''); let s = 0;
-      if (c === t || cc === tc) s = 100;
-      else if (cc.length >= 4 && tc.includes(cc)) s = 75;
-      else if (tc.length >= 4 && cc.includes(tc)) s = 70;
-      else { const d = lev(tc, cc), L = Math.max(cc.length, tc.length); if (L >= 4 && d <= (L >= 9 ? 2 : 1)) s = 60; }
-      if (s > bs) { bs = s; best = i; }
-    }
-  });
-  return best;
+const STOP = new Set('and or of in on to with from for you your her his him she he it is at by be are was every all any big name something someone some thing things film films movie movies bollywood my me we our who what'.split(' '));
+const toks = x => norm(x).split(' ').filter(w => w.length >= 3 && !STOP.has(w));
+const stem = w => { const x = w.replace(/ies$/, 'y').replace(/(ing|ed|es|s)$/, ''); return x.length >= 3 ? x : w; };
+function tokMatch(a, b){
+  if (a === b || stem(a) === stem(b)) return true;
+  const m = Math.min(a.length, b.length);
+  if (m >= 4 && (a.startsWith(b) || b.startsWith(a))) return true;            // fight / fights, shah / shahrukh
+  if (m >= 5 && a.slice(0, 4) === b.slice(0, 4)) return true;                  // dance / dancing
+  if (m >= 4) return lev(a, b) <= (Math.max(a.length, b.length) >= 8 ? 2 : 1);  // small typos
+  return false;
 }
+function scoreCand(t, c){
+  const tc = t.replace(/ /g, ''), cc = c.replace(/ /g, '');
+  if (c === t || cc === tc) return 100;
+  const L = Math.max(cc.length, tc.length);
+  if (L >= 4 && lev(tc, cc) <= Math.max(1, Math.floor(L * .25))) return 85;    // close spelling
+  if (cc.length >= 4 && tc.includes(cc)) return 75;
+  if (tc.length >= 4 && cc.includes(tc)) return 70;
+  const tt = toks(t), ct = toks(c);
+  if (!tt.length || !ct.length) return 0;
+  const hits = ct.filter(w => tt.some(x => tokMatch(x, w))).length;
+  const typedHits = tt.filter(x => ct.some(w => tokMatch(x, w))).length;
+  // key words must line up: most of what was said, or all of the answer ("chicken nuggets" is not "chicken tikka masala")
+  if (!hits || (typedHits / tt.length < .67 && hits < ct.length)) return 0;
+  return 40 + Math.round(20 * hits / ct.length);
+}
+/* every answer that is close enough, best first */
+function rankAnswers(board, typed){
+  const t = norm(typed); if (!t) return [];
+  return board.answers.map((a, i) => ({ i, s: Math.max(...cands(a).map(c => scoreCand(t, c))) }))
+    .filter(r => r.s >= 40).sort((x, y) => y.s - x.s || x.i - y.i);
+}
+function matchAnswer(board, typed){ const r = rankAnswers(board, typed); return r.length ? r[0].i : null; }
 
 /* ================= rendering ================= */
 let prevScreen = null, setupFilled = false;
@@ -1276,19 +1314,19 @@ function controlsModel(){
         out.buttons = [B('Reveal question', 'revealQ', 'Space', 'primary'), B('Skip this board', 'skipBoard', 'S')];
         break;
       case 'faceoff':
-        out.status = `<b>Face-off</b> · Read the question aloud. Reveal any answer they hit, then pick who plays.`;
-        out.tiles = tiles();
+        out.status = `<b>Face-off</b> · Type what each player says, then pick who plays.`;
+        out.tiles = tiles(); out.input = 'game';
         out.buttons = [B('Wrong answer ✕', 'strike', 'X'), B(esc(teamName(0)) + ' play', 'control0', 'A', 'teamA'), B(esc(teamName(1)) + ' play', 'control1', 'B', 'teamB')];
         if (none) out.buttons.push(B('Skip this board', 'skipBoard', 'S'));
         break;
       case 'play':
-        out.status = `<b>${esc(teamName(c))}</b> are playing · Strikes ${S.strikes} of 3. Reveal correct answers or give a strike.`;
-        out.tiles = tiles();
+        out.status = `<b>${esc(teamName(c))}</b> are playing · Strikes ${S.strikes} of 3. Type each answer: matches flip, misses get a strike.`;
+        out.tiles = tiles(); out.input = 'game';
         out.buttons = [B('Strike ✕', 'strike', 'X', 'danger')];
         break;
       case 'steal':
-        out.status = `<b>${esc(teamName(1 - c))}</b> can steal with one guess. If it's on the board, reveal it. Otherwise the steal fails.`;
-        out.tiles = tiles();
+        out.status = `<b>${esc(teamName(1 - c))}</b> can steal with one guess. Type it in: a match wins the bank, a miss fails the steal.`;
+        out.tiles = tiles(); out.input = 'game';
         out.buttons = [B('Steal fails', 'stealFail', 'F', 'danger')];
         break;
       case 'over': {
@@ -1309,7 +1347,7 @@ function controlsModel(){
       out.buttons = [B('Start the clock', 'fmEnter', 'Enter', 'primary')];
     } else if (fm.phase === 'play') {
       out.status = `<b>Q${fm.cur + 1}:</b> ${esc(FASTMONEY[fm.q[fm.cur]].q)}`;
-      out.input = true;
+      out.input = 'fm';
       out.buttons = [B('Stop clock', 'fmStop', '', 'danger')];
     } else if (fm.phase === 'reveal') {
       if (fm.shown < 5) { out.status = `<b>Survey says…</b> · Reveal Player ${fm.p + 1}'s answers one at a time.`; out.buttons = [B('Reveal next', 'fmEnter', 'Enter', 'primary')]; }
@@ -1343,6 +1381,7 @@ function renderControls(root){
   $('.c-status', root).innerHTML = c.status;
   $('.c-tiles', root).innerHTML = c.tiles ? c.tiles.map(t => `<button class="tbtn" data-act="tile" data-i="${t.i}" ${t.open ? 'disabled' : ''} title="Reveal answer ${t.i + 1} (key ${t.i + 1})">${t.i + 1}</button>`).join('') : '';
   const inp = $('.c-input', root); inp.hidden = !c.input;
+  if (c.input && inp.dataset.mode !== c.input) { inp.dataset.mode = c.input; $('.fm-input', inp).placeholder = c.input === 'game' ? "Type the player's answer and press Enter (Esc for shortcuts)" : "Type the player's answer, then press Enter"; }
   if (!c.input && inp.contains(document.activeElement)) document.activeElement.blur();
   $('.c-buttons', root).innerHTML = c.buttons.map(b => `<button class="btn ${b.cls || ''}" data-act="${b.a}" ${b.d ? 'disabled' : ''}>${b.l}${b.k ? ` <kbd>${b.k}</kbd>` : ''}</button>`).join('');
   $('.c-extra', root).innerHTML = c.extra;
@@ -1457,13 +1496,18 @@ function runFx(f){
       break;
     }
     case 'question': play('whoosh'); break;
-    case 'reveal': play('ding'); if (vis) { const t = $(`#board .tile[data-i="${d.i}"]`); if (t) { t.classList.remove('shine'); void t.offsetWidth; t.classList.add('shine'); } } break;
+    case 'reveal': play('ding'); if (vis) {
+      const t = $(`#board .tile[data-i="${d.i}"]`); if (t) { t.classList.remove('shine'); void t.offsetWidth; t.classList.add('shine'); }
+      const a = S.screen === 'game' ? curBoard().answers[d.i] : null;
+      if (d.t && a && norm(d.t) !== norm(a.text)) banner(a.text, `You said “${d.t}” — close enough!`, 1800);
+    } break;
+    case 'already': play('dup'); if (vis) { const a = curBoard().answers[d.i]; banner('Already on the board!', `“${d.t}” = ${a ? a.text : ''}`, 1800); } break;
     case 'revealFree': play('soft'); break;
-    case 'miss': play('buzz'); if (vis) bigX(1); break;
-    case 'strike': play('buzz'); if (vis) { bigX(d.count); const fr = $('#boardFrame'); fr.classList.remove('shake'); void fr.offsetWidth; fr.classList.add('shake'); } break;
+    case 'miss': play('buzz'); if (vis) bigX(1, d.t); break;
+    case 'strike': play('buzz'); if (vis) { bigX(d.count, d.t); const fr = $('#boardFrame'); fr.classList.remove('shake'); void fr.offsetWidth; fr.classList.add('shake'); } break;
     case 'stealPrompt': later(1300, () => { if (S.phase !== 'steal') return; if (vis) banner(teamName(d.team) + ' — steal it!', 'One guess. Huddle up!'); play('chime'); }); break;
     case 'control': play('chime'); if (vis) banner(teamName(d.team) + ' play!', 'Name the rest of the board'); break;
-    case 'award': later(750, () => {
+    case 'award': later(d.how === 'stealfail' ? 1500 : 750, () => {
       play('award');
       if (!vis) return;
       const how = { clear:'Board cleared!', steal:'Stolen!', stealfail:'Steal failed — the points stay' }[d.how] || '';
@@ -1494,18 +1538,19 @@ function splash(title, sub, extra){
   clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2300);
   FX.burst(innerWidth * .2, innerHeight * .3, 1); FX.burst(innerWidth * .8, innerHeight * .3, 1);
 }
-function banner(title, sub){
+function banner(title, sub, ms){
   const el = $('#banner');
   el.innerHTML = `<div class="bn-title">${esc(title)}</div>${sub ? `<div class="bn-sub">${esc(sub)}</div>` : ''}`;
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
-  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2400);
+  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), ms || 2400);
 }
 const X_SVG = '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="4" y="4" width="92" height="92" rx="14" fill="#2a0008" stroke="#ff8a8a" stroke-width="4"/><path d="M28 28 L72 72 M72 28 L28 72" stroke="url(#gX)" stroke-width="16" stroke-linecap="round"/><path d="M28 28 L72 72 M72 28 L28 72" stroke="#fff" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/></svg>';
-function bigX(n){
-  const el = $('#bigx'); el.innerHTML = X_SVG.repeat(clampN(n, 1, 3));
+function bigX(n, said){
+  const el = $('#bigx');
+  el.innerHTML = `<div class="xrow">${X_SVG.repeat(clampN(n, 1, 3))}</div>` + (said ? `<div class="xcap">“${esc(said)}”<small>Not on the board</small></div>` : '');
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
   const fl = $('#flash'); fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
-  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 1150);
+  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), said ? 1800 : 1150);
 }
 function toast(msg){
   const el = $('#toast'); el.textContent = msg; el.classList.add('show');
@@ -1649,6 +1694,8 @@ function openHelp(){
   <h3>Host shortcuts</h3>
   <table>
     <tr><td><kbd>Space</kbd></td><td>Reveal the question</td></tr>
+    <tr><td>Type + <kbd>Enter</kbd></td><td>Type what a player says. A match, even a close one, flips its tile. Anything else gets a strike</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Leave the typing box to use the single-key shortcuts below</td></tr>
     <tr><td><kbd>1</kbd>–<kbd>8</kbd></td><td>Reveal answer by number (or click the tile)</td></tr>
     <tr><td><kbd>X</kbd></td><td>Strike (in a face-off: wrong-answer buzzer)</td></tr>
     <tr><td><kbd>A</kbd> / <kbd>B</kbd></td><td>Team 1 / Team 2 play (after the face-off)</td></tr>
