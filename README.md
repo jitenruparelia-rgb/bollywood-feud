@@ -1,6 +1,6 @@
 # Bollywood Feud · Diwali Edition
 
-A Bollywood-themed **survey game show** party game, built for Diwali night. Two teams, a host, survey-style answer boards, three strikes, steals and a **Fast Money** finale, all wrapped in diyas, marigold garlands, rangoli and fireworks.
+A Bollywood-themed **survey game show** for Diwali night: two teams race to guess the most popular answers. It has a host, survey-style answer boards, three strikes, steals and a **Fast Money** finale, all wrapped in diyas, marigold garlands, rangoli and fireworks.
 
 **Play it:** https://jitenruparelia-rgb.github.io/bollywood-feud/
 
@@ -8,7 +8,7 @@ It's one self-contained `index.html` file. No install and no build step. It also
 
 ## How a game works
 
-The game follows the TV show:
+The game follows the classic TV survey-show format:
 
 1. **Face-off.** One player from each team buzzes in. The host reveals any answer they hit, then picks which team plays.
 2. **Play.** The playing team names answers one at a time. Correct answers flip over and their points go into the round bank.
@@ -18,7 +18,7 @@ The game follows the TV show:
 
 ### Points
 
-Every board adds up to 100, like a survey of 100 people. As on the TV show, later rounds multiply every answer:
+Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds multiply every answer:
 
 | Rounds | Points |
 |---|---|
