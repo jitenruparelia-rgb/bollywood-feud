@@ -16,19 +16,21 @@ The game follows the TV show:
 4. **Round win.** Clear the board, or win the steal, and the bank is yours.
 5. **Fast Money** (optional). The winning team sends two players for five rapid-fire questions: 20 seconds for Player 1, 25 for Player 2. Together they must reach the target, which defaults to 200.
 
-### Difficulty means more points
+### Points
 
-Every board adds up to 100, like a survey of 100 people. Harder questions are worth more because later rounds multiply every answer:
+Every board adds up to 100, like a survey of 100 people. As on the TV show, later rounds multiply every answer:
 
-| Rounds | Order |
+| Rounds | Points |
 |---|---|
-| 3 | Easy ×1 · Medium ×2 · Hard ×3 |
-| 4 (default) | Easy ×1 · Easy ×1 · Medium ×2 · Hard ×3 |
-| 5 | Easy ×1 · Easy ×1 · Medium ×2 · Medium ×2 · Hard ×3 |
+| 3 | ×1 · ×2 · ×3 |
+| 4 (default) | ×1 · ×1 · ×2 · ×3 |
+| 5 | ×1 · ×1 · ×2 · ×2 · ×3 |
 
-A tie at the end triggers a sudden-death Hard board at triple points.
+A tie at the end triggers a sudden-death board at triple points.
 
-### Fun for everyone
+### A mix of easy and hard
+
+Every game mixes easy, medium and hard questions in a random order, and nothing on screen says which is which. Any round can be a crowd-pleaser or a head-scratcher. The question bank has three kinds of boards:
 
 - **Easy** boards need zero Bollywood knowledge: Diwali parties, Indian weddings, aunty questions, dance moves.
 - **Medium** boards are for people who've seen a few films: the Khans, SRK movies, villains, train scenes.
