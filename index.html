@@ -71,9 +71,6 @@ body[data-screen=setup] #topbar{display:none}
 .tb-logo small{display:block;font:700 9px var(--font-body);letter-spacing:.32em;text-transform:uppercase;color:var(--gold3);opacity:.75;text-shadow:none}
 .tb-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;flex:1}
 .chip{padding:.3em .95em;border-radius:99px;font-weight:700;font-size:clamp(11px,.95vw,15px);letter-spacing:.07em;text-transform:uppercase;background:#ffffff14;border:1px solid #ffffff2a;white-space:nowrap}
-.chip.easy{background:#16b39a30;border-color:#16b39a;color:#a8f7e7}
-.chip.medium{background:#ff9f1c30;border-color:#ff9f1c;color:#ffdca3}
-.chip.hard{background:#e0218a30;border-color:#ff5fa8;color:#ffc4e1}
 .chip.mult{background:linear-gradient(90deg,#ffd76a,#f0a92a);color:#2a0b00;border-color:#ffe9a8}
 .chip.sd{background:linear-gradient(90deg,#ff5050,#b31212);border-color:#ffb3b3}
 .tb-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
@@ -836,7 +833,6 @@ const store = {
 let chan = null; try { chan = new BroadcastChannel('bfeud'); } catch (e) {}
 
 const TEAM_NAMES = ['Team Khan','Team Kapoor','Team Bachchan','Team Chopra','Masala Mavericks','Dhoom Machale','Chai Champions','Rangoli Rebels','Jalebi Squad','Desi Dynamos','Filmi Fanatics','Bhangra Brigade','Sparkler Squad','Ladoo Legends','Naatu Naatu Crew','Mithai Mafia','Diya Dazzlers','Paneer Pirates'];
-const TIER = { easy:{label:'Easy'}, medium:{label:'Medium'}, hard:{label:'Hard'} };
 const MULT_LABEL = { 1:'Single points', 2:'Double points', 3:'Triple points' };
 const MULTS = { 3: [1, 2, 3], 4: [1, 1, 2, 3], 5: [1, 1, 2, 2, 3] };
 /* every game gets a mix of easy, medium and hard questions, in a random order */

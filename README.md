@@ -30,12 +30,13 @@ A tie at the end triggers a sudden-death board at triple points.
 
 ### A mix of easy and hard
 
-Every game mixes easy, medium and hard questions in a random order, and nothing on screen says which is which. Any round can be a crowd-pleaser or a head-scratcher. The question bank has three kinds of boards:
+Every game mixes easy, medium and hard questions in a random order, and nothing on screen says which is which. Any round can be a crowd-pleaser or a head-scratcher. The bank has 58 boards and 23 Fast Money questions in three kinds:
 
 - **Easy** boards need zero Bollywood knowledge: Diwali parties, Indian weddings, aunty questions, dance moves.
 - **Medium** boards are for people who've seen a few films: the Khans, SRK movies, villains, train scenes.
 - **Hard** boards are for true filmi fans: composers, remakes, the Oscars, golden-era actresses, iconic dialogues.
-- **Newcomer hints** add a short explanation under each question. Hindi titles and dialogues show an English translation when revealed.
+
+**Newcomer hints** add a short explanation under each question, and Hindi titles and dialogues show an English translation when revealed.
 
 ## Typing in answers
 
