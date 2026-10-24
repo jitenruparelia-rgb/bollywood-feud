@@ -18,26 +18,30 @@ The game follows the classic TV survey-show format:
 
 ### Game length and points
 
-Choose 4, 6, 8, 10, 12 or 15 rounds. The default is 10, about 45 minutes with Fast Money. Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds multiply every answer:
+Choose 3, 4, 5, 6, 8 or 10 rounds. The default is 4, about 20 minutes with Fast Money. Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds multiply every answer:
 
 | Rounds | ×1 | ×2 | ×3 |
 |---|---|---|---|
-| 4 | 1–2 | 3 | 4 |
+| 3 | 1 | 2 | 3 |
+| 4 (default) | 1–2 | 3 | 4 |
+| 5 | 1 | 2–3 | 4–5 |
 | 6 | 1–2 | 3–4 | 5–6 |
 | 8 | 1–4 | 5–6 | 7–8 |
-| 10 (default) | 1–4 | 5–7 | 8–10 |
-| 12 | 1–4 | 5–8 | 9–12 |
-| 15 | 1–5 | 6–10 | 11–15 |
+| 10 | 1–4 | 5–7 | 8–10 |
 
 A tie at the end triggers a sudden-death board at triple points.
 
-### Mostly easy, never repetitive
+### A whole night of games
 
-About half of every game is easy questions anyone can play, with some medium ones and roughly one hard question per 10 rounds, in a random order. Nothing on screen says which is which.
+The game is built for 5 to 10 games in one night:
 
-No two questions in a game share an answer, so you won't hear "DDLJ" on two different boards. Fast Money, Skip and sudden death follow the same rule. Back-to-back games also avoid recently played questions, so about five 10-round games in a row get all-new questions.
+- **No repeats all night.** No question and no Fast Money question appears twice, whether it comes from a new game, a rematch, Skip or sudden death. Over ten 4-round games the game also tries to avoid questions that share answers with earlier games.
+- **No overlap within a game.** No two questions in the same game share an answer, so you won't hear "DDLJ" on two boards in one game.
+- **Mostly easy.** About half of every game is easy questions anyone can play, the rest mostly medium, with a hard question only now and then: about one in ten. Nothing on screen says which is which.
+- **Tonight's count.** The setup screen shows how many games you've played and how many questions are still unplayed.
+- **Start a new night.** If you play test games before the party, press this button on the setup screen so every question is fresh for your guests.
 
-The bank has 78 boards and 23 Fast Money questions in three kinds:
+The bank has 78 boards and 53 Fast Money questions. The boards come in three kinds:
 
 - **Easy** boards need zero Bollywood knowledge: Diwali parties, Indian weddings, aunty questions, dance moves.
 - **Medium** boards are for people who've seen a few films: the Khans, SRK movies, villains, train scenes.
