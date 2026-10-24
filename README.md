@@ -16,21 +16,28 @@ The game follows the classic TV survey-show format:
 4. **Round win.** Clear the board, or win the steal, and the bank is yours.
 5. **Fast Money** (optional). The winning team sends two players for five rapid-fire questions: 20 seconds for Player 1, 25 for Player 2. Together they must reach the target, which defaults to 200.
 
-### Points
+### Game length and points
 
-Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds multiply every answer:
+Choose 4, 6, 8, 10, 12 or 15 rounds. The default is 10, about 45 minutes with Fast Money. Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds multiply every answer:
 
-| Rounds | Points |
-|---|---|
-| 3 | ×1 · ×2 · ×3 |
-| 4 (default) | ×1 · ×1 · ×2 · ×3 |
-| 5 | ×1 · ×1 · ×2 · ×2 · ×3 |
+| Rounds | ×1 | ×2 | ×3 |
+|---|---|---|---|
+| 4 | 1–2 | 3 | 4 |
+| 6 | 1–2 | 3–4 | 5–6 |
+| 8 | 1–4 | 5–6 | 7–8 |
+| 10 (default) | 1–4 | 5–7 | 8–10 |
+| 12 | 1–4 | 5–8 | 9–12 |
+| 15 | 1–5 | 6–10 | 11–15 |
 
 A tie at the end triggers a sudden-death board at triple points.
 
-### A mix of easy and hard
+### Mostly easy, never repetitive
 
-Every game mixes easy, medium and hard questions in a random order, and nothing on screen says which is which. Any round can be a crowd-pleaser or a head-scratcher. The bank has 58 boards and 23 Fast Money questions in three kinds:
+About half of every game is easy questions anyone can play, with some medium ones and roughly one hard question per 10 rounds, in a random order. Nothing on screen says which is which.
+
+No two questions in a game share an answer, so you won't hear "DDLJ" on two different boards. Fast Money, Skip and sudden death follow the same rule. Back-to-back games also avoid recently played questions, so about five 10-round games in a row get all-new questions.
+
+The bank has 78 boards and 23 Fast Money questions in three kinds:
 
 - **Easy** boards need zero Bollywood knowledge: Diwali parties, Indian weddings, aunty questions, dance moves.
 - **Medium** boards are for people who've seen a few films: the Khans, SRK movies, villains, train scenes.

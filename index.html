@@ -483,7 +483,7 @@ body.reduce .flame,body.reduce .diya .glow{animation-duration:4s}
         <div class="field">
           <span class="flabel">Rounds</span>
           <div class="seg" id="segRounds" role="group" aria-label="Number of rounds">
-            <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button>
+            <button type="button" data-v="4">4</button><button type="button" data-v="6">6</button><button type="button" data-v="8">8</button><button type="button" data-v="10">10</button><button type="button" data-v="12">12</button><button type="button" data-v="15">15</button>
           </div>
           <div class="plan-preview" id="planPreview"></div>
         </div>
@@ -587,7 +587,8 @@ body.reduce .flame,body.reduce .diya .glow{animation-duration:4s}
    QUESTION BANK
    Each main board: tier (easy | medium | hard), q, hint, a: [[text, points, note?, [other accepted answers]?], ...]
    Points on each board add up to 100, like a survey of 100 people.
-   Each game mixes the tiers in a random order; later rounds multiply every value (×1, ×1, ×2, ×3).
+   Each game is about half easy, mostly medium otherwise, ~1 hard per 10 rounds, in random order;
+   no two boards in one game share an answer. Later rounds multiply every value (×1, then ×2, then ×3).
    Notes appear in small text under a revealed answer (great for translations).
    ===================================================================== */
 const BOARDS = [
@@ -774,7 +775,70 @@ const BOARDS = [
    a:[["Bhangra",28,"Punjab"],["Kathak",22,"North India"],["Garba",18,"Gujarat",["dandiya"]],["Bharatanatyam",14,"Tamil Nadu",["bharatnatyam"]],["Kuchipudi",8,"Andhra Pradesh"],["Odissi",6,"Odisha"],["Lavani",4,"Maharashtra"]]},
   {tier:'hard', q:"Name a Bollywood star who started out on TV",
    hint:"Before the big screen, they were on the small one.",
-   a:[["Shah Rukh Khan",34,"Fauji, Circus",["srk","shahrukh","sharukh"]],["Sushant Singh Rajput",20,"Pavitra Rishta",["sushant"]],["Vidya Balan",14,"Hum Paanch",["vidya"]],["Ayushmann Khurrana",12,"MTV Roadies",["ayushmann","ayushman"]],["Yami Gautam",10,null,["yami"]],["Mouni Roy",10,"Naagin",["mouni"]]]}
+   a:[["Shah Rukh Khan",34,"Fauji, Circus",["srk","shahrukh","sharukh"]],["Sushant Singh Rajput",20,"Pavitra Rishta",["sushant"]],["Vidya Balan",14,"Hum Paanch",["vidya"]],["Ayushmann Khurrana",12,"MTV Roadies",["ayushmann","ayushman"]],["Yami Gautam",10,null,["yami"]],["Mouni Roy",10,"Naagin",["mouni"]]]},
+  /* ---------------- EASY: everyday India (added for long games) ---------------- */
+  {tier:'easy', q:"Name something you'd see on an Indian road",
+   hint:"Indian traffic is an adventure!",
+   a:[["Cows",30,null,["cow","cattle"]],["Auto-rickshaws",22,null,["rickshaw","auto","tuk tuk","autos"]],["Honking cars",16,null,["horns","honking","traffic","cars"]],["A whole family on one scooter",12,null,["scooter","bikes","motorbikes","family on a bike"]],["Potholes",10,null,["pothole"]],["Street vendors",10,null,["vendors","hawkers","stalls"]]]},
+  {tier:'easy', q:"Name a reason Indian parents phone you",
+   hint:"Brace yourself — the phone is ringing again.",
+   a:[["To ask if you've eaten",30,null,["eat","food","have you eaten","did you eat"]],["To ask when you're visiting",24,null,["come home","visit","visiting","when are you coming"]],["Marriage talk",16,null,["marriage","wedding","rishta","proposal"]],["To forward a WhatsApp message",12,null,["whatsapp","forward","message","forwards"]],["Tech help",10,null,["phone help","computer","wifi","password","tech"]],["Just to check you're alive",8,null,["checking in","worried","alive","check on you"]]]},
+  {tier:'easy', q:"Name an English word that originally came from India",
+   hint:"You probably say some of these every day!",
+   a:[["Yoga",26,"Sanskrit"],["Pyjamas",18,"From 'pae jama' (leg garment)",["pajamas","pyjama","pajama"]],["Bungalow",14,"From Bengali 'bangla'"],["Shampoo",12,"From 'champo' (to press, massage)"],["Guru",12,"Sanskrit for teacher"],["Karma",10,"Sanskrit"],["Jungle",8,"From 'jangal' (wild land)"]]},
+  {tier:'easy', q:"Name something people do at Holi",
+   hint:"Holi is the spring festival of colours, a few months after Diwali.",
+   a:[["Throw coloured powder",36,null,["colours","colors","color","colour","gulal","powder","throw colour","paint"]],["Water balloons & water guns",20,null,["water balloons","water guns","pichkari","water","water fight"]],["Dance",14,null,["dancing","music"]],["Eat gujiya",10,"A sweet stuffed dumpling",["gujiya","sweets"]],["Drink thandai",10,"A spiced milk drink",["thandai","bhang"]],["Light a bonfire the night before",10,null,["bonfire","holika","holika dahan"]]]},
+  {tier:'easy', q:"Name a sport Indians love",
+   hint:"One of these is basically a religion in India.",
+   a:[["Cricket",52],["Kabaddi",12,"A tag-and-wrestle team sport"],["Football",10,null,["soccer"]],["Hockey",10,null,["field hockey"]],["Badminton",8],["Wrestling",4,null,["kushti"]],["Chess",4]]},
+  {tier:'easy', q:"Name something you'd find in an Indian lunchbox (tiffin)",
+   hint:"A tiffin is a stacked steel lunchbox.",
+   a:[["Roti / chapati",28,null,["paratha","chapatti","phulka"]],["Dal",20,"Lentil curry",["daal","lentils"]],["Rice",16],["Sabzi (vegetable curry)",14,null,["sabji","vegetables","veg curry","curry"]],["Pickle (achaar)",12,null,["achar","pickles"]],["Curd / yoghurt",10,null,["yogurt","dahi","raita"]]]},
+  {tier:'easy', q:"Name something you'd see at an Indian train station",
+   hint:"Indian Railways carries millions of people every single day.",
+   a:[["Huge crowds",28,null,["crowd","crowds","people","rush"]],["Chai sellers",22,null,["chai","tea","chaiwala","tea seller"]],["Porters in red shirts",16,null,["porter","porters","coolie","coolies"]],["Snack stalls",12,null,["snacks","food stalls","food","samosa"]],["People sleeping on the platform",10,null,["sleeping","sleepers"]],["Monkeys",6,null,["monkey"]],["Late trains",6,null,["delays","late","delayed","delay"]]]},
+  {tier:'easy', q:"Name something people do to get their home ready for Diwali",
+   hint:"Diwali means a top-to-bottom house makeover.",
+   a:[["Clean the whole house",34,null,["clean","cleaning","spring clean"]],["Hang lights",22,null,["lights","fairy lights","decorate","decorations"]],["Draw a rangoli",14,null,["rangoli"]],["Set out diyas",12,null,["diyas","diya","lamps"]],["Hang marigold garlands",10,null,["marigold","marigolds","flowers","garland","toran"]],["Buy new things for the house",8,null,["shopping","buy","new things","new furniture"]]]},
+  {tier:'easy', q:"Name a nickname Indian parents call their kids",
+   hint:"Every Indian kid has a nickname they'd rather keep secret.",
+   a:[["Beta / Beti",30,"Son / daughter",["son","daughter"]],["Baby / Babu",20,null,["baby","babu"]],["Raja / Rani",14,"King / queen",["raja","rani","prince","princess"]],["Munna / Munni",12,null,["munna","munni"]],["Chintu / Pinky / Bunty",12,null,["chintu","pinky","bunty","sweety","pappu"]],["Chhotu",6,"Little one",["chotu"]],["Laddoo",6,null,["ladoo","laddu"]]]},
+  {tier:'easy', q:"Name a type of Indian bread",
+   hint:"Curry needs something to scoop it up with!",
+   a:[["Naan",30,null,["nan","garlic naan","butter naan"]],["Roti",26,null,["chapati","chapatti","phulka"]],["Paratha",18,null,["parantha","aloo paratha"]],["Puri",12,null,["poori","puris"]],["Kulcha",8],["Bhatura",6,null,["bhature","chole bhature"]]]},
+  {tier:'easy', q:"Name something you'd see at a Bollywood award show",
+   hint:"Think red carpets, big outfits and bigger egos.",
+   a:[["A red carpet",26,null,["red carpet","carpet"]],["Dance performances",22,null,["dancing","performances","dance","performance"]],["Designer outfits",16,null,["gowns","fashion","outfits","dresses"]],["Trophies",14,null,["awards","trophy","award"]],["Thank-you speeches",12,null,["speech","speeches","thank you"]],["Paparazzi",10,null,["photographers","cameras","photos"]]]},
+  {tier:'easy', q:"Name something you'd find at a roadside chai stall",
+   hint:"The best tea in India costs less than a coin.",
+   a:[["Chai",34,null,["tea","masala chai","cutting chai"]],["Biscuits",20,null,["biscuit","parle g","rusk","cookies"]],["Samosas",14,null,["samosa"]],["People gossiping",12,null,["gossip","chatting","talking","people"]],["Newspapers",10,null,["newspaper","paper"]],["Clay cups (kulhads)",10,null,["kulhad","cups","glasses","clay cups"]]]},
+  {tier:'easy', q:"Name something tourists do in India",
+   hint:"First-time visitor? This is your checklist.",
+   a:[["Visit the Taj Mahal",34,null,["taj mahal","taj"]],["Eat spicy food",20,null,["eat","food","curry","spicy food"]],["Shop at the markets",14,null,["shopping","markets","bazaar","market"]],["Get an upset stomach",12,null,["delhi belly","sick","upset stomach","food poisoning"]],["Do yoga",10,null,["yoga","ashram","meditate","meditation"]],["Ride an elephant or camel",10,null,["elephant","camel","elephant ride","camel ride"]]]},
+  {tier:'easy', q:"Name something every Bollywood hero has",
+   hint:"Every leading man comes with the same kit.",
+   a:[["Perfect hair",24,null,["hair","hairstyle"]],["A six-pack",20,null,["abs","six pack","muscles"]],["Cool sunglasses",16,null,["sunglasses","shades","glasses"]],["A loyal best friend",14,null,["best friend","sidekick","friend"]],["A motorbike",14,null,["bike","motorcycle"]],["A tragic backstory",12,null,["backstory","sad past","dead parents","tragedy"]]]},
+
+  /* ---------------- MEDIUM: added for long games ---------------- */
+  {tier:'medium', q:"Name a Bollywood film with a number in its title",
+   hint:"Ek, do, teen… or just plain digits!",
+   a:[["3 Idiots",34,null,["three idiots"]],["2 States",18,null,["two states"]],["Dhoom 2",14,null,["dhoom"]],["Baahubali 2",12,"Telugu blockbuster",["bahubali 2","baahubali","bahubali"]],["83",10,null,["eighty three","1983"]],["Ek Tha Tiger",6,"'Ek' means one",["ek tha tiger"]],["102 Not Out",6,null,["102"]]]},
+  {tier:'medium', q:"Name a Bollywood film set mostly abroad",
+   hint:"Bollywood loves an overseas adventure.",
+   a:[["Zindagi Na Milegi Dobara",22,"Spain",["znmd","zindagi na milegi"]],["Kal Ho Naa Ho",20,"New York",["kal ho na ho","khnh"]],["Namastey London",16,"London",["namaste london"]],["Queen",14,"Paris and Amsterdam"],["Bang Bang!",10,"Europe",["bang bang"]],["Kabhi Alvida Naa Kehna",10,"New York",["kank","kabhi alvida na kehna"]],["Dhoom 3",8,"Chicago",["dhoom"]]]},
+  {tier:'medium', q:"Name a popular Indian web series",
+   hint:"Streaming has its own stars now: Netflix, Prime Video and more.",
+   a:[["Sacred Games",26,"Netflix"],["Mirzapur",22,"Prime Video"],["The Family Man",18,"Prime Video",["family man"]],["Panchayat",14,"Prime Video"],["Made in Heaven",10,"Prime Video"],["Delhi Crime",10,"Netflix"]]},
+  {tier:'medium', q:"Name a famous Bollywood actress from the 1990s",
+   hint:"The era of chiffon sarees on mountaintops.",
+   a:[["Madhuri Dixit",28,null,["madhuri"]],["Kajol",22],["Juhi Chawla",14,null,["juhi"]],["Karisma Kapoor",12,null,["karisma","karishma"]],["Aishwarya Rai",12,null,["aishwarya","ash"]],["Raveena Tandon",6,null,["raveena"]],["Urmila Matondkar",6,null,["urmila"]]]},
+  {tier:'medium', q:"Name a Bollywood film with a strong female lead",
+   hint:"The heroine is the hero in these.",
+   a:[["Queen",24],["Dangal",16],["Mary Kom",16],["Kahaani",12,"'Story'"],["Mardaani",12],["English Vinglish",10],["Neerja",10]]},
+  {tier:'medium', q:"Name an Indian-origin celebrity famous in the West",
+   hint:"Hollywood, YouTube, comedy and even Silicon Valley count.",
+   a:[["Priyanka Chopra",22,null,["priyanka"]],["Dev Patel",18,"Slumdog Millionaire",["dev"]],["Mindy Kaling",16,"The Office",["mindy"]],["Lilly Singh",12,"YouTube star",["lilly","superwoman"]],["Hasan Minhaj",10,"Comedian",["hasan"]],["Kal Penn",10,"Harold & Kumar"],["Sundar Pichai",6,"Google CEO",["sundar"]],["Freida Pinto",6,"Slumdog Millionaire",["freida"]]]}
 ];
 
 /* =====================================================================
@@ -834,15 +898,24 @@ let chan = null; try { chan = new BroadcastChannel('bfeud'); } catch (e) {}
 
 const TEAM_NAMES = ['Team Khan','Team Kapoor','Team Bachchan','Team Chopra','Masala Mavericks','Dhoom Machale','Chai Champions','Rangoli Rebels','Jalebi Squad','Desi Dynamos','Filmi Fanatics','Bhangra Brigade','Sparkler Squad','Ladoo Legends','Naatu Naatu Crew','Mithai Mafia','Diya Dazzlers','Paneer Pirates'];
 const MULT_LABEL = { 1:'Single points', 2:'Double points', 3:'Triple points' };
-const MULTS = { 3: [1, 2, 3], 4: [1, 1, 2, 3], 5: [1, 1, 2, 2, 3] };
+const ROUND_CHOICES = [4, 6, 8, 10, 12, 15];
+/* points rise through the game: roughly the first 40% of rounds ×1, the next 30% ×2, the last 30% ×3 */
+function multsFor(n){
+  const t3 = Math.max(1, Math.round(n * .3)), t2 = Math.max(1, Math.round(n * .3)), t1 = Math.max(0, n - t2 - t3);
+  return [...Array(t1).fill(1), ...Array(t2).fill(2), ...Array(t3).fill(3)];
+}
 /* every game gets a mix of easy, medium and hard questions, in a random order */
-const MIX = { 3: ['easy','medium','hard'], 4: ['easy','easy','medium','hard'], 5: ['easy','easy','medium','hard','hard'] };
+/* about half easy, a few medium, and only about one hard question per ten rounds */
+function mixFor(n){
+  const hard = n < 4 ? 0 : Math.max(1, Math.round(n * .1)), easy = Math.round(n * .5);
+  return [...Array(easy).fill('easy'), ...Array(n - easy - hard).fill('medium'), ...Array(hard).fill('hard')];
+}
 const FM_TIME = [20, 25];
 
 /* ================= state ================= */
 function defaultSettings(){
   let reduce = false; try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  return { teams:['Team Khan','Team Kapoor'], rounds:4, fastMoney:true, fmTarget:200, sound:true, hints:true, reduceFx:reduce };
+  return { teams:['Team Khan','Team Kapoor'], rounds:10, fastMoney:true, fmTarget:200, sound:true, hints:true, reduceFx:reduce };
 }
 function fresh(){
   return { v:1, rev:0, screen:'setup', settings:{...defaultSettings(), ...(store.get(SKEY) || {})},
@@ -896,13 +969,91 @@ const curBoard = () => BOARDS[curRound().b];
 const mult = () => curRound().mult;
 const boardsOf = tier => BOARDS.map((b, i) => !tier || b.tier === tier ? i : -1).filter(i => i >= 0);
 const RKEY = 'bfeud.recent.v1';
-const recent = () => { const r = store.get(RKEY); return r && Array.isArray(r.b) && Array.isArray(r.f) ? r : { b: [], f: [] }; };
-function pickUnused(tier){
-  const used = new Set(S.plan.map(p => p.b)), rec = new Set(recent().b);
-  let pool = boardsOf(tier).filter(i => !used.has(i) && !rec.has(i));
-  if (!pool.length) pool = boardsOf(tier).filter(i => !used.has(i));
-  if (!pool.length) pool = boardsOf(tier);
-  return pool[rnd(pool.length)];
+const recent = () => { const r = store.get(RKEY); return r && Array.isArray(r.b) && Array.isArray(r.f) ? { last: [], ...r } : { b: [], f: [], last: [] }; };
+
+/* Two questions "overlap" when an answer on one is also an answer on the other
+   (e.g. DDLJ on both "Shah Rukh Khan film" and "film with a train scene").
+   A game never contains two overlapping questions. Worked out once from the data,
+   so new questions are handled automatically. */
+let OVERLAP = null;
+/* fast check: does an answer's own wording equal, or nearly equal, any accepted wording on the other board?
+   (same rule the typing box uses for a confident match: exact, or a typo-level difference) */
+function answerKeys(board){
+  if (board._keys) return board._keys;
+  const own = [], all = [];
+  board.answers.forEach(a => {
+    const names = [norm(a.text)].concat(a.text.split(/[\/()–]/).map(norm)).filter(Boolean).map(x => x.replace(/ /g, ''));
+    own.push(...names);
+    all.push(...cands(a).map(x => x.replace(/ /g, '')));
+  });
+  return (board._keys = { own: [...new Set(own)], all: [...new Set(all)] });
+}
+function overlaps(x, y){
+  const hit = (a, b) => {
+    const A = answerKeys(a).own, B = answerKeys(b).all, setB = new Set(B);
+    return A.some(t => setB.has(t) || (t.length >= 4 && B.some(c => Math.abs(c.length - t.length) <= Math.max(1, Math.floor(Math.max(c.length, t.length) * .25)) && lev(t, c) <= Math.max(1, Math.floor(Math.max(c.length, t.length) * .25)))));
+  };
+  return hit(x, y) || hit(y, x);
+}
+function overlapMap(){
+  if (OVERLAP) return OVERLAP;
+  const bb = BOARDS.map(() => new Set()), fb = FASTMONEY.map(() => new Set()), ff = FASTMONEY.map(() => new Set());
+  for (let i = 0; i < BOARDS.length; i++) for (let j = i + 1; j < BOARDS.length; j++) if (overlaps(BOARDS[i], BOARDS[j])) { bb[i].add(j); bb[j].add(i); }
+  FASTMONEY.forEach((f, i) => {
+    BOARDS.forEach((b, j) => { if (overlaps(f, b)) fb[i].add(j); });
+    for (let j = i + 1; j < FASTMONEY.length; j++) if (overlaps(f, FASTMONEY[j])) { ff[i].add(j); ff[j].add(i); }
+  });
+  return (OVERLAP = { bb, fb, ff });
+}
+/* boards that could be added to this game without repeating or overlapping anything */
+function freeBoards(taken, fmq, avoid){
+  const O = overlapMap();
+  return boardsOf().filter(i => !taken.includes(i) && !(avoid && avoid.has(i)) && taken.every(t => !O.bb[t].has(i)) && (fmq || []).every(f => !O.fb[f].has(i)));
+}
+function buildPlan(n){
+  const mults = multsFor(n), rec = recent();
+  // first try to avoid everything from recent games, then just the last game, then nothing
+  for (const avoid of [new Set(rec.b), new Set(rec.last), new Set()]) {
+    for (let t = 0; t < 300; t++) {
+      const pick = [];
+      for (const tier of shuffle(mixFor(n))) {
+        const pool = freeBoards(pick, null, avoid).filter(i => BOARDS[i].tier === tier);
+        if (!pool.length) break;
+        pick.push(pool[rnd(pool.length)]);
+      }
+      if (pick.length === n) return pick.map((b, i) => ({ tier: BOARDS[b].tier, mult: mults[i], b }));
+    }
+  }
+  // the bank is too small for this many rounds: allow overlaps, but never repeat a question
+  const pick = [];
+  for (let i = 0; i < n; i++) { const pool = boardsOf().filter(b => !pick.includes(b)); pick.push(pool[rnd(pool.length)]); }
+  return pick.map((b, i) => ({ tier: BOARDS[b].tier, mult: mults[i], b }));
+}
+function pickFastMoney(planBoards){
+  const O = overlapMap(), recF = new Set(recent().f);
+  for (const skipRecent of [true, false]) for (const strict of [true, false]) {
+    const pick = [];
+    for (const i of shuffle(FASTMONEY.map((_, k) => k))) {
+      if (pick.length === 5) break;
+      if (skipRecent && recF.has(i)) continue;
+      if (strict && planBoards.some(b => O.fb[i].has(b))) continue;
+      if (pick.some(p => O.ff[p].has(i))) continue;
+      pick.push(i);
+    }
+    if (pick.length === 5) return pick;
+  }
+  return shuffle(FASTMONEY.map((_, k) => k)).slice(0, 5);
+}
+/* a replacement board for Skip or sudden death that fits the rest of the game */
+function pickReplacement(exceptIndex){
+  const others = S.plan.filter((_, k) => k !== exceptIndex).map(p => p.b);
+  const used = S.plan.map(p => p.b);
+  const rec = new Set(recent().b);
+  let pool = freeBoards(others, S.fmQ).filter(i => !used.includes(i));
+  const fresh = pool.filter(i => !rec.has(i));
+  if (fresh.length) pool = fresh;
+  if (!pool.length) pool = boardsOf().filter(i => !used.includes(i));
+  return pool.length ? pool[rnd(pool.length)] : null;
 }
 const allRevealed = () => S.revealed.every(v => v > 0);
 
@@ -910,13 +1061,12 @@ const allRevealed = () => S.revealed.every(v => v > 0);
 function startGame(settings){
   S.settings = settings;
   S.scores = [0, 0]; S.plan = []; S.fm = null; S.lastAward = null;
-  const n = MULTS[settings.rounds] ? settings.rounds : 4, tiers = shuffle(MIX[n]);
-  MULTS[n].forEach((m, i) => { const b = pickUnused(tiers[i]); S.plan.push({ tier: BOARDS[b].tier, mult: m, b }); });
-  const rec = recent(), recF = new Set(rec.f);
-  const fresh5 = shuffle(FASTMONEY.map((_, i) => i).filter(i => !recF.has(i)));
-  S.fmQ = fresh5.concat(shuffle(rec.f.filter(i => FASTMONEY[i]))).slice(0, 5);
+  const n = clampN(Math.round(+settings.rounds) || 10, 3, 20);
+  S.plan = buildPlan(n);
+  S.fmQ = pickFastMoney(S.plan.map(p => p.b));
   // remember what was played so the next game (rematch) gets new questions
-  store.set(RKEY, { b: rec.b.concat(S.plan.map(p => p.b)).slice(-28), f: rec.f.concat(S.fmQ).slice(-10) });
+  const rec = recent(), played = S.plan.map(p => p.b);
+  store.set(RKEY, { b: rec.b.concat(played).slice(-40), f: rec.f.concat(S.fmQ).slice(-10), last: played });
   S.screen = 'game';
   startRound(0);
   S.hist = [];
@@ -988,11 +1138,10 @@ const ACTS = {
   },
   skipBoard(){
     if (S.screen !== 'game' || !['hidden','faceoff'].includes(S.phase) || S.revealed.some(v => v)) return;
-    const rd = curRound(), used = new Set(S.plan.map(p => p.b));
-    const pool = boardsOf().filter(i => !used.has(i));
-    if (!pool.length) { toast('No more boards left'); return; }
+    const nb = pickReplacement(S.r);
+    if (nb === null) { toast('No more boards left'); return; }
     commit(() => {
-      S.plan[S.r].b = pool[rnd(pool.length)]; S.plan[S.r].tier = BOARDS[S.plan[S.r].b].tier;
+      S.plan[S.r].b = nb; S.plan[S.r].tier = BOARDS[nb].tier;
       S.revealed = Array(curBoard().answers.length).fill(0);
       S.bank = 0; S.phase = 'hidden'; fx('skip');
     });
@@ -1001,7 +1150,7 @@ const ACTS = {
     if (S.screen !== 'game' || S.phase !== 'over') return;
     commit(() => {
       if (S.r + 1 < S.plan.length) startRound(S.r + 1);
-      else if (S.scores[0] === S.scores[1]) { { const b = pickUnused(null); S.plan.push({ tier: BOARDS[b].tier, mult: 3, b, sd: true }); } startRound(S.r + 1); }
+      else if (S.scores[0] === S.scores[1]) { const b = pickReplacement(-1) ?? rnd(BOARDS.length); S.plan.push({ tier: BOARDS[b].tier, mult: 3, b, sd: true }); startRound(S.r + 1); }
       else if (S.settings.fastMoney) fmInit();
       else { S.screen = 'results'; fx('results'); }
     });
@@ -1187,16 +1336,23 @@ function setNum(el, v){
 }
 
 /* ----- setup ----- */
-function planChips(n){
-  return (MULTS[n] || MULTS[4]).map((m, i) => `<span class="chip ${m > 1 ? 'mult' : ''}">Round ${i + 1} · ×${m}</span>`).join('') + `<span class="chip">Easy &amp; hard questions mixed in</span>`;
+function planChips(n, fm){
+  const m = multsFor(n), chips = [];
+  [1, 2, 3].forEach(x => {
+    const first = m.indexOf(x) + 1, last = m.lastIndexOf(x) + 1;
+    if (first) chips.push(`<span class="chip ${x > 1 ? 'mult' : ''}">Round${first === last ? ' ' + first : 's ' + first + '–' + last} · ×${x}</span>`);
+  });
+  const mins = n * 4 + (fm ? 6 : 0);
+  return chips.join('') + `<span class="chip">About ${Math.round(mins / 5) * 5} minutes</span><span class="chip">Mostly easy · no repeated answers</span>`;
 }
 function renderSetup(){
   if (setupFilled) return;
   setupFilled = true;
   const st = S.settings;
   $('#tA').value = st.teams[0]; $('#tB').value = st.teams[1];
-  $$('#segRounds button').forEach(b => b.classList.toggle('on', +b.dataset.v === st.rounds));
-  $('#planPreview').innerHTML = planChips(st.rounds);
+  const r = ROUND_CHOICES.includes(+st.rounds) ? +st.rounds : 10;
+  $$('#segRounds button').forEach(b => b.classList.toggle('on', +b.dataset.v === r));
+  $('#planPreview').innerHTML = planChips(r, st.fastMoney);
   $('#optFM').checked = st.fastMoney; $('#optTarget').value = st.fmTarget;
   $('#targetWrap').style.opacity = st.fastMoney ? 1 : .4;
   $('#optSound').checked = st.sound; $('#optHints').checked = st.hints; $('#optFx').checked = st.reduceFx;
@@ -1205,7 +1361,7 @@ function readSetup(){
   const on = $('#segRounds .on');
   return {
     teams: [$('#tA').value.trim() || 'Team Khan', $('#tB').value.trim() || 'Team Kapoor'],
-    rounds: on ? +on.dataset.v : 4,
+    rounds: on ? +on.dataset.v : 10,
     fastMoney: $('#optFM').checked,
     fmTarget: clampN(Math.round(+$('#optTarget').value || 200), 50, 500),
     sound: $('#optSound').checked, hints: $('#optHints').checked, reduceFx: $('#optFx').checked
@@ -1758,11 +1914,14 @@ function openHelp(){
   </ol>
   <h3>Points</h3>
   <p>Every board adds up to 100, like a survey of 100 people. As in classic TV game shows, later rounds are worth more: answer values are doubled or tripled.</p>
-  <table><tr><th>Rounds</th><th>Points</th></tr>
-  <tr><td>3</td><td>×1 · ×2 · ×3</td></tr>
-  <tr><td>4</td><td>×1 · ×1 · ×2 · ×3</td></tr>
-  <tr><td>5</td><td>×1 · ×1 · ×2 · ×2 · ×3</td></tr></table>
-  <p>Every game mixes easy, medium and hard questions in a random order, so any round could be a crowd-pleaser or a real head-scratcher. If the scores are tied at the end, a sudden-death board at triple points decides it.</p>
+  <table><tr><th>Rounds</th><th>×1</th><th>×2</th><th>×3</th></tr>
+  <tr><td>4</td><td>1–2</td><td>3</td><td>4</td></tr>
+  <tr><td>6</td><td>1–2</td><td>3–4</td><td>5–6</td></tr>
+  <tr><td>8</td><td>1–4</td><td>5–6</td><td>7–8</td></tr>
+  <tr><td>10</td><td>1–4</td><td>5–7</td><td>8–10</td></tr>
+  <tr><td>12</td><td>1–4</td><td>5–8</td><td>9–12</td></tr>
+  <tr><td>15</td><td>1–5</td><td>6–10</td><td>11–15</td></tr></table>
+  <p>About half of every game is easy questions anyone can play, with some medium ones and roughly one hard question per ten rounds, in a random order. No two questions in a game share an answer, so you won't hear "DDLJ" twice. If the scores are tied at the end, a sudden-death board at triple points decides it.</p>
   <h3>Fast Money</h3>
   <p>The winning team sends two players. Player 1 gets 20 seconds for five quick questions while Player 2 waits outside. Player 2 then gets 25 seconds for the same questions and must not repeat Player 1's answers. Together they need to reach the target (200 by default). The host types each answer; the game suggests a match, and the host can fix any match before the reveal.</p>
   <h3>Host shortcuts</h3>
@@ -1856,14 +2015,17 @@ $('#setupForm').addEventListener('submit', e => {
 $('#segRounds').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   $$('#segRounds button').forEach(x => x.classList.toggle('on', x === b));
-  $('#planPreview').innerHTML = planChips(+b.dataset.v);
+  $('#planPreview').innerHTML = planChips(+b.dataset.v, $('#optFM').checked);
 });
 $$('.dice').forEach(d => d.addEventListener('click', () => {
   const t = +d.dataset.dice, other = (t ? $('#tA') : $('#tB')).value, inp = t ? $('#tB') : $('#tA');
   const pool = TEAM_NAMES.filter(n => n !== other && n !== inp.value);
   inp.value = pool[rnd(pool.length)];
 }));
-$('#optFM').addEventListener('change', e => { $('#targetWrap').style.opacity = e.target.checked ? 1 : .4; });
+$('#optFM').addEventListener('change', e => {
+  $('#targetWrap').style.opacity = e.target.checked ? 1 : .4;
+  const on = $('#segRounds .on'); $('#planPreview').innerHTML = planChips(on ? +on.dataset.v : 10, e.target.checked);
+});
 $('#optFx').addEventListener('change', e => { S.settings.reduceFx = e.target.checked; document.body.classList.toggle('reduce', e.target.checked); FX.seed(); });
 
 /* host window toggles */
@@ -1873,6 +2035,8 @@ $('#hcSound').addEventListener('change', e => { hostSound = e.target.checked; if
 if (IS_HOST) document.title = 'Host screen · Bollywood Feud';
 buildDecor();
 render();
+// work out which questions overlap while the setup screen is showing, so Start is instant
+setTimeout(() => { try { overlapMap(); } catch (e) {} }, 300);
 })();
 </script>
 </body>
