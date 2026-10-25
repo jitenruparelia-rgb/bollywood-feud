@@ -66,7 +66,9 @@ Press **Esc** to leave the typing box and use the single-key shortcuts.
 - **One screen:** the host controls sit along the bottom. Click the board tiles or use the keyboard.
 - **Two screens (recommended):** click **Host screen** to open a private window with every answer. Put the main window on the TV, keep the host window on your laptop, and press **H** on the TV to hide the controls. Both windows stay in sync.
 - **Paper:** **Answer sheet** opens a printable list of this game's answers.
-- The game saves after every action, so refreshing never loses the score. **Undo** (Z) reverses any mistake.
+- **Fits any screen.** Laptops, projectors, 1080p and 4K TVs, ultrawide monitors, tablets and phones all work. On big screens everything scales up, and the home screen resizes to fit the display exactly.
+- **Always opens on the home screen.** Opening or refreshing the game shows the home screen first. If a game was still in progress, a **Resume game** button brings it back with the scores intact. The host screen offers the same button.
+- The game saves after every action. **Undo** (Z) reverses any mistake.
 - **Rematch** picks questions you haven't just played.
 
 ### Keyboard shortcuts
