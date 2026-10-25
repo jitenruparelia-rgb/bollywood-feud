@@ -1009,13 +1009,23 @@ if (!validState(S)) S = fresh();
    A game that was still going is kept aside so the host can resume it.
    The host window is left alone so refreshing it never interrupts a game. */
 const RESUME_KEY = 'bfeud.resume.v1';
+/* First ask whether another TV tab is already showing this game. If one answers, this tab just mirrors it;
+   if nobody answers (a real reopen or refresh), the game is set aside for Resume and the home screen shows. */
+let pendingHome = null;
 if (!IS_HOST && S.screen !== 'setup') {
-  if (S.screen === 'game' || S.screen === 'fm') {
-    if (S.fm && S.fm.endAt) S.fm.leftMs = Math.max(0, S.fm.endAt - Date.now());
-    store.set(RESUME_KEY, S);
+  pendingHome = S;
+  S = Object.assign(fresh(), { rev: pendingHome.rev, settings: pendingHome.settings, hideBar: pendingHome.hideBar, fx: pendingHome.fx });
+}
+function settleHome(){
+  const live = pendingHome; if (!live) return;
+  pendingHome = null;
+  if (S.screen !== 'setup' || S.rev !== live.rev) return;   // a live update or a new game arrived meanwhile
+  if (live.screen === 'game' || live.screen === 'fm') {
+    if (live.fm && live.fm.endAt) live.fm.leftMs = Math.max(0, live.fm.endAt - Date.now());
+    store.set(RESUME_KEY, live);
   }
-  S = Object.assign(fresh(), { rev: S.rev + 1, settings: S.settings, hideBar: S.hideBar, fx: S.fx });
-  store.set(KEY, S);
+  S.rev = live.rev + 1;
+  save(); render();
 }
 function resumable(){
   const g = store.get(RESUME_KEY);
@@ -1041,7 +1051,12 @@ function commit(fn, opts = {}){
 }
 function save(){ store.set(KEY, S); if (chan) { try { chan.postMessage(S); } catch (e) {} } }
 function receive(ns){ if (!ns || typeof ns.rev !== 'number' || ns.rev <= S.rev || !validState(ns)) return; S = ns; render(); }
-if (chan) chan.onmessage = e => receive(e.data);
+if (chan) chan.onmessage = e => {
+  const d = e.data || {};
+  if (d.type === 'ping') { if (!IS_HOST && !pendingHome) { try { chan.postMessage({ type: 'pong' }); } catch (_) {} } return; }
+  if (d.type === 'pong') { if (pendingHome) { S = pendingHome; pendingHome = null; render(); } return; }
+  receive(d);
+};
 addEventListener('storage', e => { if (e.key === KEY && e.newValue) { try { receive(JSON.parse(e.newValue)); } catch (_) {} } });
 
 function undo(){
@@ -1086,15 +1101,33 @@ function overlaps(x, y){
   };
   return hit(x, y) || hit(y, x);
 }
+const OKEY = 'bfeud.overlap.v1';
+function bankSignature(){
+  let h = 5381;
+  const add = str => { for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; };
+  BOARDS.concat(FASTMONEY).forEach(b => { add(b.q); b.answers.forEach(a => { add(a.text); (a.alts || []).forEach(add); }); });
+  return BOARDS.length + ':' + FASTMONEY.length + ':' + h;
+}
 function overlapMap(){
   if (OVERLAP) return OVERLAP;
+  const sig = bankSignature(), cached = store.get(OKEY);
+  if (cached && cached.sig === sig) {
+    const toSets = arr => arr.map(x => new Set(x));
+    return (OVERLAP = { bb: toSets(cached.bb), fb: toSets(cached.fb), ff: toSets(cached.ff) });
+  }
+  const result = computeOverlap();
+  const toArr = sets => sets.map(x => [...x]);
+  store.set(OKEY, { sig, bb: toArr(result.bb), fb: toArr(result.fb), ff: toArr(result.ff) });
+  return (OVERLAP = result);
+}
+function computeOverlap(){
   const bb = BOARDS.map(() => new Set()), fb = FASTMONEY.map(() => new Set()), ff = FASTMONEY.map(() => new Set());
   for (let i = 0; i < BOARDS.length; i++) for (let j = i + 1; j < BOARDS.length; j++) if (overlaps(BOARDS[i], BOARDS[j])) { bb[i].add(j); bb[j].add(i); }
   FASTMONEY.forEach((f, i) => {
     BOARDS.forEach((b, j) => { if (overlaps(f, b)) fb[i].add(j); });
     for (let j = i + 1; j < FASTMONEY.length; j++) if (overlaps(f, FASTMONEY[j])) { ff[i].add(j); ff[j].add(i); }
   });
-  return (OVERLAP = { bb, fb, ff });
+  return { bb, fb, ff };
 }
 /* boards that could be added to this game without repeating or overlapping anything */
 function freeBoards(taken, fmq, avoid){
@@ -1149,7 +1182,8 @@ function pickReplacement(exceptIndex){
   if (!pool.length) pool = boardsOf().filter(i => !used.includes(i));
   return pool.length ? pool[rnd(pool.length)] : null;
 }
-function rememberBoard(b){ const r = recent(); if (!r.b.includes(b)) { r.b.push(b); store.set(RKEY, r); } }
+function rememberBoard(b){ const r = recent(); if (!r.b.includes(b)) { r.b = r.b.concat(b).slice(-70); store.set(RKEY, r); } }
+function rememberFastMoney(list){ const r = recent(); r.f = r.f.concat(list.filter(i => !r.f.includes(i))).slice(-60); store.set(RKEY, r); }
 function nightStatus(){
   const r = recent(), b = new Set(r.b), f = new Set(r.f);
   return { games: r.games || 0, boardsLeft: BOARDS.filter((_, i) => !b.has(i)).length, fmLeft: FASTMONEY.filter((_, i) => !f.has(i)).length };
@@ -1165,8 +1199,10 @@ function startGame(settings){
   S.plan = buildPlan(n);
   S.fmQ = pickFastMoney(S.plan.map(p => p.b));
   // remember what was played so the next game (rematch) gets new questions
-  const rec = recent(), played = S.plan.map(p => p.b);
-  store.set(RKEY, { b: rec.b.concat(played).slice(-70), f: rec.f.concat(S.fmQ).slice(-60), last: played, games: (rec.games || 0) + 1 });
+  // questions are marked as played tonight when they are revealed (see revealQ / fmInit),
+  // so skipped boards and games abandoned early don't use up the night's questions
+  const rec = recent();
+  store.set(RKEY, { ...rec, last: S.plan.map(p => p.b), games: (rec.games || 0) + 1 });
   S.screen = 'game';
   startRound(0);
   S.hist = [];
@@ -1208,15 +1244,21 @@ function doStrike(typed){
 }
 
 const ACTS = {
-  revealQ(){ if (S.screen !== 'game' || S.phase !== 'hidden') return; commit(() => { S.phase = 'faceoff'; fx('question'); }); },
+  revealQ(){ if (S.screen !== 'game' || S.phase !== 'hidden') return; rememberBoard(curRound().b); commit(() => { S.phase = 'faceoff'; fx('question'); }); },
   tile(i){ revealTile(i); },
   strike(){ doStrike(); },
   guess(text){
     if (S.screen !== 'game' || !['faceoff','play','steal'].includes(S.phase)) return;
     const t = String(text || '').trim(); if (!t) return 'empty';
     const ranked = rankAnswers(curBoard(), t);
-    const hit = ranked.find(r => !S.revealed[r.i]);
+    // a confident match for an answer already on the board is "already said", never a different tile;
+    // only vague answers (e.g. "Khan") fall through to the next unrevealed match
+    const top = ranked[0];
+    const hit = top && S.revealed[top.i] && top.s >= 85 ? null : ranked.find(r => !S.revealed[r.i]);
     if (hit) { revealTile(hit.i, t); return 'hit'; }
+    if (ranked.length && S.phase === 'steal') {   // the stealing team only gets one guess, and that one is already up there
+      commit(() => { fx('already', { t, i: ranked[0].i }); award(S.control, 'stealfail'); }); return 'miss';
+    }
     if (ranked.length) { commit(() => fx('already', { t, i: ranked[0].i }), { hist: false }); return 'already'; }
     if (S.phase === 'steal') { commit(() => { fx('miss', { t }); award(S.control, 'stealfail'); }); return 'miss'; }
     doStrike(t); return 'miss';
@@ -1240,7 +1282,6 @@ const ACTS = {
     if (S.screen !== 'game' || !['hidden','faceoff'].includes(S.phase) || S.revealed.some(v => v)) return;
     const nb = pickReplacement(S.r);
     if (nb === null) { toast('No more boards left'); return; }
-    rememberBoard(nb);
     commit(() => {
       S.plan[S.r].b = nb; S.plan[S.r].tier = BOARDS[nb].tier;
       S.revealed = Array(curBoard().answers.length).fill(0);
@@ -1251,7 +1292,7 @@ const ACTS = {
     if (S.screen !== 'game' || S.phase !== 'over') return;
     commit(() => {
       if (S.r + 1 < S.plan.length) startRound(S.r + 1);
-      else if (S.scores[0] === S.scores[1]) { const b = pickReplacement(-1) ?? rnd(BOARDS.length); rememberBoard(b); S.plan.push({ tier: BOARDS[b].tier, mult: 3, b, sd: true }); startRound(S.r + 1); }
+      else if (S.scores[0] === S.scores[1]) { const b = pickReplacement(-1) ?? rnd(BOARDS.length); S.plan.push({ tier: BOARDS[b].tier, mult: 3, b, sd: true }); startRound(S.r + 1); }
       else if (S.settings.fastMoney) fmInit();
       else { S.screen = 'results'; fx('results'); }
     });
@@ -1310,7 +1351,10 @@ const ACTS = {
     store.set(RKEY, { b: [], f: [], last: [], games: 0 });
     renderNight(); fitSetup(); toast('New night: all questions are fresh again');
   },
-  startSaved(){ commit(() => startGame({ ...S.settings })); },
+  startSaved(){
+    if (resumable() && !confirm('A game is still waiting to be resumed. Start a new game and discard it?')) return;
+    commit(() => startGame({ ...S.settings }));
+  },
   resumeGame(){
     const g = resumable(); if (!g) { toast('There is no game to resume'); renderResume(); return; }
     const rev = S.rev, n = S.fx.n;
@@ -1342,6 +1386,7 @@ function fmInit(){
   const team = S.scores[0] >= S.scores[1] ? 0 : 1;
   S.fm = { team, q: S.fmQ.slice(0, 5), e: [[null,null,null,null,null],[null,null,null,null,null]], p: 0, cur: 0, phase: 'intro', endAt: null, owner: null, shown: 0 };
   S.screen = 'fm'; fixOpen = false;
+  rememberFastMoney(S.fm.q);
   fx('fmIntro', { team });
 }
 function fmAdvance(){
@@ -1362,7 +1407,6 @@ function fmSetMatch(p, i, v){
   commit(() => {
     if (!fm.e[p][i]) fm.e[p][i] = { t: '—', m: null };
     fm.e[p][i].m = v === '' ? null : +v;
-    if (fm.phase === 'done') { /* totals recompute on render */ }
   });
 }
 function submitFM(inp){
@@ -1408,7 +1452,10 @@ function scoreCand(t, c){
   const hits = ct.filter(w => tt.some(x => tokMatch(x, w))).length;
   const typedHits = tt.filter(x => ct.some(w => tokMatch(x, w))).length;
   // key words must line up: most of what was said, or all of the answer ("chicken nuggets" is not "chicken tikka masala")
-  if (!hits || (typedHits / tt.length < .67 && hits < ct.length)) return 0;
+  // ...and even when every word of the answer is there, at least half of what was said must belong to it
+  // ("Dil Chahta Hai" contains "dil" but is not "Dil Se")
+  const said = typedHits / tt.length;
+  if (!hits || (said < .67 && (hits < ct.length || said < .5))) return 0;
   return 40 + Math.round(20 * hits / ct.length);
 }
 /* every answer that is close enough, best first */
@@ -1557,7 +1604,7 @@ function renderGame(){
     $('#qhint').textContent = S.settings.hints && b.hint ? '✦ ' + b.hint : '';
   }
   // board
-  const board = $('#board'), key = S.r + ':' + rd.b;
+  const board = $('#board'), key = S.r + ':' + rd.b + ':' + m;
   if (board.dataset.key !== key) {
     board.classList.add('noanim');
     board.innerHTML = buildBoard(b, m);
@@ -2020,7 +2067,8 @@ const FX = (() => {
     }
   }
   addEventListener('resize', resize);
-  resize(); requestAnimationFrame(step);
+  resize();
+  if (!IS_HOST) requestAnimationFrame(step);   // the host window hides both canvases
   return { burst, celebrate, seed };
 })();
 
@@ -2142,7 +2190,7 @@ addEventListener('keydown', e => {
   if (S.screen === 'setup') return;
   if (k === 'h') { ACTS.toggleBar(); return; }
   if (k === 'm') { toggleSound(); return; }
-  if (k === 'z' || k === 'Backspace') { e.preventDefault(); undo(); return; }
+  if (k === 'z') { e.preventDefault(); undo(); return; }
   if (k === 'Escape') { $('#splash').classList.remove('show'); return; }
   if (S.screen === 'game') {
     if (k === ' ') { e.preventDefault(); ACTS.revealQ(); }
@@ -2156,14 +2204,13 @@ addEventListener('keydown', e => {
     else if (k === 'n' || k === 'Enter') { e.preventDefault(); ACTS.next(); }
   } else if (S.screen === 'fm') {
     if (k === 'Enter') { e.preventDefault(); ACTS.fmEnter(); }
-  } else if (S.screen === 'results') {
-    if (k === 'Enter') ACTS.rematch();
   }
 });
 
 /* setup form */
 $('#setupForm').addEventListener('submit', e => {
   e.preventDefault(); ac();
+  if (resumable() && !confirm('A game is still waiting to be resumed. Start a new game and discard it?')) return;
   const st = readSetup(); store.set(SKEY, st);
   commit(() => startGame(st));
 });
@@ -2190,6 +2237,10 @@ $('#hcSound').addEventListener('change', e => { hostSound = e.target.checked; if
 if (IS_HOST) document.title = 'Host screen · Bollywood Feud';
 buildDecor();
 render();
+if (pendingHome) {
+  if (chan) { try { chan.postMessage({ type: 'ping' }); } catch (_) {} setTimeout(settleHome, 400); }
+  else settleHome();
+}
 // work out which questions overlap while the setup screen is showing, so Start is instant
 setTimeout(() => { try { overlapMap(); } catch (e) {} }, 300);
 })();
